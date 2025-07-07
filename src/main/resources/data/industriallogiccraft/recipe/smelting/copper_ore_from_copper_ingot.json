@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 0.2,
+  "group": "copper_ingot",
+  "ingredient": "industriallogiccraft:copper_ore_block",
+  "result": {
+    "count": 1,
+    "id": "minecraft:copper_ingot"
+  }
+}

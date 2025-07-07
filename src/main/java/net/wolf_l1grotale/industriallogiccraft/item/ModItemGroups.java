@@ -12,11 +12,18 @@ import net.wolf_l1grotale.industriallogiccraft.block.ModBlocks;
 
 public class ModItemGroups {
 
-    public static final ItemGroup INDUSTRIAL_BLOCK_GROUP = Registry.register(Registries.ITEM_GROUP, Identifier.of(IndustrialLogicCraft.MOD_ID, "pink_garnet_items"),
+    public static final ItemGroup INDUSTRIAL_BLOCK_GROUP = Registry.register(Registries.ITEM_GROUP, Identifier.of(IndustrialLogicCraft.MOD_ID, "industrial_block_group"),
             FabricItemGroup.builder().icon(() -> new ItemStack(ModBlocks.COPPER_ORE_BLOCK))
                     .displayName(Text.translatable("itemgroup.industriallogiccraft.industrial_block_group"))
                     .entries((displayContext, entries) -> {
                         entries.add(ModBlocks.COPPER_ORE_BLOCK);
+                    }).build());
+
+    public static final ItemGroup INDUSTRIAL_ITEM_GROUP = Registry.register(Registries.ITEM_GROUP, Identifier.of(IndustrialLogicCraft.MOD_ID, "industrial_item_group"),
+            FabricItemGroup.builder().icon(() -> new ItemStack(ModItems.COPPER_NUGGET))
+                    .displayName(Text.translatable("itemgroup.industriallogiccraft.industrial_items_group"))
+                    .entries((displayContext, entries) -> {
+                        entries.add(ModItems.COPPER_NUGGET);
                     }).build());
 
     public static void registerItemGroups() {
