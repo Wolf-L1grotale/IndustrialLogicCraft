@@ -9,11 +9,13 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
 import net.wolf_l1grotale.industriallogiccraft.IndustrialLogicCraft;
+import net.wolf_l1grotale.industriallogiccraft.item.custom.ChiselItem;
 
 import java.util.function.Function;
 
 public class ModItems {
     public static final Item COPPER_NUGGET = registerItem("copper_nugget", Item::new, new Item.Settings());
+    public static final Item CHISEL_TOOLS = registerItem("chisel_tools", ChiselItem::new, new Item.Settings().maxDamage(32));
 
     public static Item registerItem(String name, Function<Item.Settings, Item> itemFactory, Item.Settings settings) {
         RegistryKey<Item> itemKey = RegistryKey.of(RegistryKeys.ITEM, Identifier.of(IndustrialLogicCraft.MOD_ID, name));

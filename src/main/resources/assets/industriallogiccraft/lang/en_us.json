@@ -1,6 +1,7 @@
 {
   "item.industriallogiccraft.copper_ore_block": "Copper Ore",
   "item.industriallogiccraft.copper_nugget": "Copper Nugget",
+  "item.industriallogiccraft.chisel_tools": "Chisel",
 
   "itemgroup.industriallogiccraft.industrial_block_group": "Industrial Block Group",
   "itemgroup.industriallogiccraft.industrial_items_group": "Industrial Items Group"

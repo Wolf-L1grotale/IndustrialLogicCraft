@@ -24,6 +24,7 @@ public class ModItemGroups {
                     .displayName(Text.translatable("itemgroup.industriallogiccraft.industrial_items_group"))
                     .entries((displayContext, entries) -> {
                         entries.add(ModItems.COPPER_NUGGET);
+                        entries.add(ModItems.CHISEL_TOOLS);
                     }).build());
 
     public static void registerItemGroups() {
