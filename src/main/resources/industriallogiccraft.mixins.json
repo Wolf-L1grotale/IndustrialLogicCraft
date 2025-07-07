@@ -1,6 +1,6 @@
 {
 	"required": true,
-	"package": "net.wolf_l1grotale.mixin",
+	"package": "net.wolf_l1grotale.industriallogiccraft.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
 		"ExampleMixin"

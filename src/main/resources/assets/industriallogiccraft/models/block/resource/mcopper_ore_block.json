@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "industriallogiccraft:block/resource/tcopper_ore_block"
+  }
+}
+

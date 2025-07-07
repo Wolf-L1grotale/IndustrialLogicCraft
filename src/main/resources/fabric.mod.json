@@ -1,6 +1,6 @@
 {
 	"schemaVersion": 1,
-	"id": "industrial-logic-craft",
+	"id": "industriallogiccraft",
 	"version": "${version}",
 	"name": "Industrial Logic Craft",
 	"description": "This is an example description! Tell everyone what your mod is about!",
@@ -11,19 +11,22 @@
 		"homepage": "https://fabricmc.net/",
 		"sources": "https://github.com/FabricMC/fabric-example-mod"
 	},
-	"license": "CC0-1.0",
-	"icon": "assets/industrial-logic-craft/icon.png",
+	"license": "MIT",
+	"icon": "assets/industriallogiccraft/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"net.wolf_l1grotale.IndustrialLogicCraft"
+			"net.wolf_l1grotale.industriallogiccraft.IndustrialLogicCraft"
 		],
 		"fabric-datagen": [
-			"net.wolf_l1grotale.IndustrialLogicCraftDataGenerator"
+			"net.wolf_l1grotale.industriallogiccraft.IndustrialLogicCraftDataGenerator"
+		],
+		"client": [
+			"net.wolf_l1grotale.industriallogiccraft.IndustrialLogicCraftClient"
 		]
 	},
 	"mixins": [
-		"industrial-logic-craft.mixins.json"
+		"industriallogiccraft.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.16.14",

@@ -1,4 +1,4 @@
-package net.wolf_l1grotale.mixin;
+package net.wolf_l1grotale.industriallogiccraft.mixin;
 
 import net.minecraft.server.MinecraftServer;
 import org.spongepowered.asm.mixin.Mixin;
