@@ -42,3 +42,4 @@ replay_*.log
 #main
 
 usage-in-create/
+/src/main/generated/

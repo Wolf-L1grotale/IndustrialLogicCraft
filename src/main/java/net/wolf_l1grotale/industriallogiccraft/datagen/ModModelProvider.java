@@ -16,7 +16,7 @@ public class ModModelProvider extends FabricModelProvider {
     @Override
     public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
         //blockStateModelGenerator.registerSimpleCubeAll(ModBlocks.COPPER_ORE_BLOCK);
-        final Identifier COB = Models.CUBE_ALL.upload(ModBlocks.COPPER_ORE_BLOCK, TextureMap.all(Identifier.of(IndustrialLogicCraft.MOD_ID,"block/resource/tcopper_ore_block")), blockStateModelGenerator.modelCollector);
+        final Identifier COB = Models.CUBE_ALL.upload(Identifier.of(IndustrialLogicCraft.MOD_ID,"block/resource/mcopper_ore_block"), TextureMap.all(Identifier.of(IndustrialLogicCraft.MOD_ID,"block/resource/tcopper_ore_block")), blockStateModelGenerator.modelCollector);
         blockStateModelGenerator.registerParentedItemModel(ModBlocks.COPPER_ORE_BLOCK, COB);
     }
 
