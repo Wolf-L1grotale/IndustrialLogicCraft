@@ -25,11 +25,11 @@ public class ModModelProvider extends FabricModelProvider {
         blockStateModelGenerator.registerParentedItemModel(ModBlocks.COPPER_ORE_BLOCK, COB);
 
         final Identifier SFG = Models.ORIENTABLE.upload(
-            Identifier.of(IndustrialLogicCraft.MOD_ID, "block/machine/solid_fuel_generator"),
+            Identifier.of(IndustrialLogicCraft.MOD_ID, "block/generators/electric/solid_fuel_generator/mgenerator"),
             new TextureMap()
-                .put(TextureKey.FRONT, Identifier.of(IndustrialLogicCraft.MOD_ID, "block/machine/generator_front"))
-                .put(TextureKey.SIDE, Identifier.of(IndustrialLogicCraft.MOD_ID, "block/machine/generator_leftrightback"))
-                .put(TextureKey.TOP, Identifier.of(IndustrialLogicCraft.MOD_ID, "block/machine/generator_top")),
+                .put(TextureKey.FRONT, Identifier.of(IndustrialLogicCraft.MOD_ID, "block/generators/electric/solid_fuel_generator/generator_front"))
+                .put(TextureKey.SIDE, Identifier.of(IndustrialLogicCraft.MOD_ID, "block/generators/electric/solid_fuel_generator/generator_leftrightback"))
+                .put(TextureKey.TOP, Identifier.of(IndustrialLogicCraft.MOD_ID, "block/generators/electric/solid_fuel_generator/generator_top")),
             blockStateModelGenerator.modelCollector
         );
 
