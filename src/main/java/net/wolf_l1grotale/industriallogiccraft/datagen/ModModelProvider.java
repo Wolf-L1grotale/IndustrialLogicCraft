@@ -19,19 +19,28 @@ public class ModModelProvider extends FabricModelProvider {
 
     @Override
     public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
-        final Identifier COB = Models.CUBE_ALL.upload(
-            Identifier.of(IndustrialLogicCraft.MOD_ID, "block/resource/mcopper_ore_block"),
-            TextureMap.all(Identifier.of(IndustrialLogicCraft.MOD_ID, "block/resource/tcopper_ore_block")),
+        final Identifier COB = Models.CUBE_ALL.upload(Identifier.of(IndustrialLogicCraft.MOD_ID, "block/resource/mcopper_ore_block"),
+                TextureMap.all(Identifier.of(IndustrialLogicCraft.MOD_ID, "block/resource/tcopper_ore_block")), blockStateModelGenerator.modelCollector);
+        blockStateModelGenerator.blockStateCollector.accept(createSingletonBlockState(ModBlocks.COPPER_ORE_BLOCK, createWeightedVariant(COB)));
+        blockStateModelGenerator.registerParentedItemModel(ModBlocks.COPPER_ORE_BLOCK, COB);
+
+        final Identifier SFG = Models.CUBE.upload(
+            Identifier.of(IndustrialLogicCraft.MOD_ID, "block/machine/solid_fuel_generator"),
+            new TextureMap()
+                .put(TextureKey.PARTICLE, Identifier.of(IndustrialLogicCraft.MOD_ID, "block/machine/generator_front"))
+                .put(TextureKey.UP, Identifier.of(IndustrialLogicCraft.MOD_ID, "block/machine/generator_top"))
+                .put(TextureKey.DOWN, Identifier.of(IndustrialLogicCraft.MOD_ID, "block/machine/generator_bottom"))
+                .put(TextureKey.NORTH, Identifier.of(IndustrialLogicCraft.MOD_ID, "block/machine/generator_front"))
+                .put(TextureKey.SOUTH, Identifier.of(IndustrialLogicCraft.MOD_ID, "block/machine/generator_leftrightback"))
+                .put(TextureKey.EAST, Identifier.of(IndustrialLogicCraft.MOD_ID, "block/machine/generator_leftrightback"))
+                .put(TextureKey.WEST, Identifier.of(IndustrialLogicCraft.MOD_ID, "block/machine/generator_leftrightback")),
             blockStateModelGenerator.modelCollector
         );
 
-        // Регистрируем blockstate с явным указанием пути к модели
         blockStateModelGenerator.blockStateCollector.accept(
-            createSingletonBlockState(ModBlocks.COPPER_ORE_BLOCK, createWeightedVariant(COB))
+            createSingletonBlockState(ModBlocks.SOLID_FUEL_GENERATOR, createWeightedVariant(SFG))
         );
-
-        // Регистрируем модель предмета
-        blockStateModelGenerator.registerParentedItemModel(ModBlocks.COPPER_ORE_BLOCK, COB);
+        blockStateModelGenerator.registerParentedItemModel(ModBlocks.SOLID_FUEL_GENERATOR, SFG);
     }
 
     @Override

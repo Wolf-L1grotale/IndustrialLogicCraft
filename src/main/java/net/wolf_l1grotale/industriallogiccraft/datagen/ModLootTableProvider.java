@@ -17,5 +17,6 @@ public class ModLootTableProvider extends FabricBlockLootTableProvider {
     @Override
     public void generate() {
         addDrop(ModBlocks.COPPER_ORE_BLOCK, oreDrops(ModBlocks.COPPER_ORE_BLOCK, ModItems.COPPER_NUGGET));
+        addDrop(ModBlocks.SOLID_FUEL_GENERATOR);
     }
 }

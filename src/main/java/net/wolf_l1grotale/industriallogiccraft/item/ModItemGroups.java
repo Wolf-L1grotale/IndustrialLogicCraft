@@ -17,6 +17,7 @@ public class ModItemGroups {
                     .displayName(Text.translatable("itemgroup.industriallogiccraft.industrial_block_group"))
                     .entries((displayContext, entries) -> {
                         entries.add(ModBlocks.COPPER_ORE_BLOCK);
+                        entries.add(ModBlocks.SOLID_FUEL_GENERATOR);
                     }).build());
 
     public static final ItemGroup INDUSTRIAL_ITEM_GROUP = Registry.register(Registries.ITEM_GROUP, Identifier.of(IndustrialLogicCraft.MOD_ID, "industrial_item_group"),

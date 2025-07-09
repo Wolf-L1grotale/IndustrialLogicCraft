@@ -28,6 +28,14 @@ public class ModBlocks {
                     .requiresTool()
                     .sounds(BlockSoundGroup.STONE));
 
+    public static final Block SOLID_FUEL_GENERATOR = registerBlockItem("solid_fuel_generator",
+            ExperienceDroppingBlock::new,
+            UniformIntProvider.create(2, 5),
+            AbstractBlock.Settings.create()
+                    .strength(3f)
+                    .requiresTool()
+                    .sounds(BlockSoundGroup.METAL));
+
     private static Block registerBlockItem(String name, BiFunction<UniformIntProvider, AbstractBlock.Settings, Block> blockFactory, UniformIntProvider experience, AbstractBlock.Settings settings) {
         RegistryKey<Block> blockKey = keyOfBlock(name);
         Block block = Registry.register(Registries.BLOCK, blockKey, blockFactory.apply(experience, settings.registryKey(blockKey)));
