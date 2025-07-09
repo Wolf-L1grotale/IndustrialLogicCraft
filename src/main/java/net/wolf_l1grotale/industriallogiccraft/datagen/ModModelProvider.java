@@ -8,23 +8,34 @@ import net.wolf_l1grotale.industriallogiccraft.IndustrialLogicCraft;
 import net.wolf_l1grotale.industriallogiccraft.block.ModBlocks;
 import net.wolf_l1grotale.industriallogiccraft.item.ModItems;
 
+import static net.minecraft.client.data.BlockStateModelGenerator.createSingletonBlockState;
+import static net.minecraft.client.data.BlockStateModelGenerator.createWeightedVariant;
+
 public class ModModelProvider extends FabricModelProvider {
+
     public ModModelProvider(FabricDataOutput output) {
         super(output);
     }
 
     @Override
     public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
-        //blockStateModelGenerator.registerSimpleCubeAll(ModBlocks.COPPER_ORE_BLOCK);
-        final Identifier COB = Models.CUBE_ALL.upload(Identifier.of(IndustrialLogicCraft.MOD_ID,"block/resource/mcopper_ore_block"), TextureMap.all(Identifier.of(IndustrialLogicCraft.MOD_ID,"block/resource/tcopper_ore_block")), blockStateModelGenerator.modelCollector);
+        final Identifier COB = Models.CUBE_ALL.upload(
+            Identifier.of(IndustrialLogicCraft.MOD_ID, "block/resource/mcopper_ore_block"),
+            TextureMap.all(Identifier.of(IndustrialLogicCraft.MOD_ID, "block/resource/tcopper_ore_block")),
+            blockStateModelGenerator.modelCollector
+        );
+
+        // Регистрируем blockstate с явным указанием пути к модели
+        blockStateModelGenerator.blockStateCollector.accept(
+            createSingletonBlockState(ModBlocks.COPPER_ORE_BLOCK, createWeightedVariant(COB))
+        );
+
+        // Регистрируем модель предмета
         blockStateModelGenerator.registerParentedItemModel(ModBlocks.COPPER_ORE_BLOCK, COB);
     }
 
     @Override
     public void generateItemModels(ItemModelGenerator itemModelGenerator) {
-        //itemModelGenerator.register(ModItems.COPPER_NUGGET, Models.GENERATED);
-        //itemModelGenerator.register(ModItems.CHISEL_TOOLS, Models.GENERATED);
-
         final Identifier CN = Models.GENERATED.upload(ModItems.COPPER_NUGGET, TextureMap.layer0(Identifier.of(IndustrialLogicCraft.MOD_ID,"item/resource/tcopper_nugget")), itemModelGenerator.modelCollector);
         itemModelGenerator.output.accept(ModItems.COPPER_NUGGET, ItemModels.basic(CN));
 
