@@ -24,16 +24,12 @@ public class ModModelProvider extends FabricModelProvider {
         blockStateModelGenerator.blockStateCollector.accept(createSingletonBlockState(ModBlocks.COPPER_ORE_BLOCK, createWeightedVariant(COB)));
         blockStateModelGenerator.registerParentedItemModel(ModBlocks.COPPER_ORE_BLOCK, COB);
 
-        final Identifier SFG = Models.CUBE.upload(
+        final Identifier SFG = Models.ORIENTABLE.upload(
             Identifier.of(IndustrialLogicCraft.MOD_ID, "block/machine/solid_fuel_generator"),
             new TextureMap()
-                .put(TextureKey.PARTICLE, Identifier.of(IndustrialLogicCraft.MOD_ID, "block/machine/generator_front"))
-                .put(TextureKey.UP, Identifier.of(IndustrialLogicCraft.MOD_ID, "block/machine/generator_top"))
-                .put(TextureKey.DOWN, Identifier.of(IndustrialLogicCraft.MOD_ID, "block/machine/generator_bottom"))
-                .put(TextureKey.NORTH, Identifier.of(IndustrialLogicCraft.MOD_ID, "block/machine/generator_front"))
-                .put(TextureKey.SOUTH, Identifier.of(IndustrialLogicCraft.MOD_ID, "block/machine/generator_leftrightback"))
-                .put(TextureKey.EAST, Identifier.of(IndustrialLogicCraft.MOD_ID, "block/machine/generator_leftrightback"))
-                .put(TextureKey.WEST, Identifier.of(IndustrialLogicCraft.MOD_ID, "block/machine/generator_leftrightback")),
+                .put(TextureKey.FRONT, Identifier.of(IndustrialLogicCraft.MOD_ID, "block/machine/generator_front"))
+                .put(TextureKey.SIDE, Identifier.of(IndustrialLogicCraft.MOD_ID, "block/machine/generator_leftrightback"))
+                .put(TextureKey.TOP, Identifier.of(IndustrialLogicCraft.MOD_ID, "block/machine/generator_top")),
             blockStateModelGenerator.modelCollector
         );
 
