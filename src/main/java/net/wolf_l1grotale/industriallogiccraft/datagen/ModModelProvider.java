@@ -2,6 +2,7 @@ package net.wolf_l1grotale.industriallogiccraft.datagen;
 
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.minecraft.block.Block;
 import net.minecraft.client.data.*;
 import net.minecraft.util.Identifier;
 import net.wolf_l1grotale.industriallogiccraft.IndustrialLogicCraft;
@@ -19,10 +20,8 @@ public class ModModelProvider extends FabricModelProvider {
 
     @Override
     public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
-        final Identifier COB = Models.CUBE_ALL.upload(Identifier.of(IndustrialLogicCraft.MOD_ID, "block/resource/mcopper_ore_block"),
-                TextureMap.all(Identifier.of(IndustrialLogicCraft.MOD_ID, "block/resource/tcopper_ore_block")), blockStateModelGenerator.modelCollector);
-        blockStateModelGenerator.blockStateCollector.accept(createSingletonBlockState(ModBlocks.COPPER_ORE_BLOCK, createWeightedVariant(COB)));
-        blockStateModelGenerator.registerParentedItemModel(ModBlocks.COPPER_ORE_BLOCK, COB);
+        registerSimpleBlock(blockStateModelGenerator, ModBlocks.COPPER_ORE_BLOCK, "block/resource/mcopper_ore_block", "block/resource/tcopper_ore_block");
+        registerSimpleBlock(blockStateModelGenerator, ModBlocks.MAGIC_BLOCK, "block/util/mmagic_block", "block/util/tmagic_block");
 
         final Identifier SFG = Models.ORIENTABLE.upload(
             Identifier.of(IndustrialLogicCraft.MOD_ID, "block/generators/electric/solid_fuel_generator/mgenerator"),
@@ -37,6 +36,16 @@ public class ModModelProvider extends FabricModelProvider {
             createSingletonBlockState(ModBlocks.SOLID_FUEL_GENERATOR, createWeightedVariant(SFG))
         );
         blockStateModelGenerator.registerParentedItemModel(ModBlocks.SOLID_FUEL_GENERATOR, SFG);
+    }
+
+    private void registerSimpleBlock(BlockStateModelGenerator generator, Block block, String modelPath, String texturePath) {
+        final Identifier identifier = Models.CUBE_ALL.upload(
+            Identifier.of(IndustrialLogicCraft.MOD_ID, modelPath),
+            TextureMap.all(Identifier.of(IndustrialLogicCraft.MOD_ID, texturePath)),
+            generator.modelCollector
+        );
+        generator.blockStateCollector.accept(createSingletonBlockState(block, createWeightedVariant(identifier)));
+        generator.registerParentedItemModel(block, identifier);
     }
 
     @Override

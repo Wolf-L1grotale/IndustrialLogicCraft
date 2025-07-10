@@ -15,7 +15,6 @@ import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.wolf_l1grotale.industriallogiccraft.IndustrialLogicCraft;
 
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
 public class ModBlocks {
 
@@ -36,6 +35,15 @@ public class ModBlocks {
                     .requiresTool()
                     .sounds(BlockSoundGroup.METAL));
 
+    public static final Block MAGIC_BLOCK = registerBlockItem("magic_block",
+            ExperienceDroppingBlock::new,
+            UniformIntProvider.create(2, 5),
+            AbstractBlock.Settings.create()
+                    .strength(3f)
+                    .requiresTool());
+
+
+
     private static Block registerBlockItem(String name, BiFunction<UniformIntProvider, AbstractBlock.Settings, Block> blockFactory, UniformIntProvider experience, AbstractBlock.Settings settings) {
         RegistryKey<Block> blockKey = keyOfBlock(name);
         Block block = Registry.register(Registries.BLOCK, blockKey, blockFactory.apply(experience, settings.registryKey(blockKey)));
@@ -44,6 +52,7 @@ public class ModBlocks {
         Registry.register(Registries.ITEM, itemKey, blockItem);
         return block;
     }
+
 
     private static RegistryKey<Block> keyOfBlock(String name) {
         return RegistryKey.of(RegistryKeys.BLOCK, Identifier.of(IndustrialLogicCraft.MOD_ID, name));
