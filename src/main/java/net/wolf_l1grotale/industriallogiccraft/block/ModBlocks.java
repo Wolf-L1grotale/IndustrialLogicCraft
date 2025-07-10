@@ -13,53 +13,44 @@ import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.wolf_l1grotale.industriallogiccraft.IndustrialLogicCraft;
+import net.wolf_l1grotale.industriallogiccraft.block.custom.MagicBlock;
 
-import java.util.function.BiFunction;
+import java.util.function.Function;
 
 public class ModBlocks {
 
 
-    public static final Block COPPER_ORE_BLOCK = registerBlockItem("copper_ore_block",
-            ExperienceDroppingBlock::new,
-            UniformIntProvider.create(2, 5),
-            AbstractBlock.Settings.create()
-                    .strength(3f)
-                    .requiresTool()
-                    .sounds(BlockSoundGroup.STONE));
-
-    public static final Block SOLID_FUEL_GENERATOR = registerBlockItem("solid_fuel_generator",
-            ExperienceDroppingBlock::new,
-            UniformIntProvider.create(2, 5),
-            AbstractBlock.Settings.create()
-                    .strength(3f)
-                    .requiresTool()
-                    .sounds(BlockSoundGroup.METAL));
-
-    public static final Block MAGIC_BLOCK = registerBlockItem("magic_block",
-            ExperienceDroppingBlock::new,
-            UniformIntProvider.create(2, 5),
-            AbstractBlock.Settings.create()
-                    .strength(3f)
-                    .requiresTool());
+    public static final Block COPPER_ORE_BLOCK = registerBlock("copper_ore_block",
+            properties -> new ExperienceDroppingBlock(UniformIntProvider.create(2, 5),
+                    properties.strength(3.0f).requiresTool().sounds(BlockSoundGroup.STONE)));
 
 
 
-    private static Block registerBlockItem(String name, BiFunction<UniformIntProvider, AbstractBlock.Settings, Block> blockFactory, UniformIntProvider experience, AbstractBlock.Settings settings) {
-        RegistryKey<Block> blockKey = keyOfBlock(name);
-        Block block = Registry.register(Registries.BLOCK, blockKey, blockFactory.apply(experience, settings.registryKey(blockKey)));
-        RegistryKey<Item> itemKey = keyOfItem(name);
-        BlockItem blockItem = new BlockItem(block, new Item.Settings().registryKey(itemKey));
-        Registry.register(Registries.ITEM, itemKey, blockItem);
-        return block;
+
+    public static final Block SOLID_FUEL_GENERATOR = registerBlock("solid_fuel_generator",
+            properties -> new ExperienceDroppingBlock(UniformIntProvider.create(2, 5),
+                    properties.strength(3.0f).requiresTool().sounds(BlockSoundGroup.METAL)));
+
+    public static final Block MAGIC_BLOCK = registerBlock("magic_block",
+            properties -> new MagicBlock(properties.strength(1f).requiresTool()));
+
+
+
+    private static Block registerBlock(String name, Function<AbstractBlock.Settings, Block> function) {
+        Block toRegister = function.apply(AbstractBlock.Settings.create().registryKey(RegistryKey.of(RegistryKeys.BLOCK, Identifier.of(IndustrialLogicCraft.MOD_ID, name))));
+        registerBlockItem(name, toRegister);
+        return Registry.register(Registries.BLOCK, Identifier.of(IndustrialLogicCraft.MOD_ID, name), toRegister);
     }
 
-
-    private static RegistryKey<Block> keyOfBlock(String name) {
-        return RegistryKey.of(RegistryKeys.BLOCK, Identifier.of(IndustrialLogicCraft.MOD_ID, name));
+    private static Block registerBlockWithoutBlockItem(String name, Function<AbstractBlock.Settings, Block> function){
+        return Registry.register(Registries.BLOCK, Identifier.of(IndustrialLogicCraft.MOD_ID, name),
+                function.apply(AbstractBlock.Settings.create().registryKey(RegistryKey.of(RegistryKeys.BLOCK, Identifier.of(IndustrialLogicCraft.MOD_ID, name)))));
     }
 
-    private static RegistryKey<Item> keyOfItem(String name) {
-        return RegistryKey.of(RegistryKeys.ITEM, Identifier.of(IndustrialLogicCraft.MOD_ID, name));
+    private static void registerBlockItem(String name, Block block) {
+        Registry.register(Registries.ITEM, Identifier.of(IndustrialLogicCraft.MOD_ID, name),
+                new BlockItem(block, new Item.Settings().useBlockPrefixedTranslationKey()
+                        .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(IndustrialLogicCraft.MOD_ID, name)))));
     }
 
     public static void registerModBlocks() {
