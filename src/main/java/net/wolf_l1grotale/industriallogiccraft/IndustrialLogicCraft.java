@@ -3,6 +3,7 @@ package net.wolf_l1grotale.industriallogiccraft;
 import net.fabricmc.api.ModInitializer;
 
 import net.wolf_l1grotale.industriallogiccraft.block.ModBlocks;
+import net.wolf_l1grotale.industriallogiccraft.block.entity.ModBlockEntities;
 import net.wolf_l1grotale.industriallogiccraft.item.ModItems;
 import net.wolf_l1grotale.industriallogiccraft.item.ModItemGroups;
 import org.slf4j.Logger;
@@ -16,6 +17,9 @@ public class IndustrialLogicCraft implements ModInitializer {
 	public void onInitialize() {
 		ModBlocks.registerModBlocks();
 		ModItems.registerModItems();
+
+		ModBlockEntities.registerBlockEntities();
+
 
 		ModItemGroups.registerItemGroups();
 	}

@@ -32,6 +32,8 @@ public class ModModelProvider extends FabricModelProvider {
             blockStateModelGenerator.modelCollector
         );
 
+
+
         blockStateModelGenerator.blockStateCollector.accept(
             createSingletonBlockState(ModBlocks.SOLID_FUEL_GENERATOR, createWeightedVariant(SFG))
         );

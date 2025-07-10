@@ -14,6 +14,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.wolf_l1grotale.industriallogiccraft.IndustrialLogicCraft;
 import net.wolf_l1grotale.industriallogiccraft.block.custom.MagicBlock;
+import net.wolf_l1grotale.industriallogiccraft.block.custom.PedestalBlock;
 
 import java.util.function.Function;
 
@@ -33,6 +34,9 @@ public class ModBlocks {
 
     public static final Block MAGIC_BLOCK = registerBlock("magic_block",
             properties -> new MagicBlock(properties.strength(1f).requiresTool()));
+
+    public static final Block PEDESTAL = registerBlock("pedestal",
+            properties -> new PedestalBlock(properties.nonOpaque()));
 
 
     //Этот метод регистрирует блок вместе с соответствующим предметом | Основной метод
