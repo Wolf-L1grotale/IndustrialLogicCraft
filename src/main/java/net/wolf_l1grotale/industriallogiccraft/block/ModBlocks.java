@@ -35,24 +35,27 @@ public class ModBlocks {
             properties -> new MagicBlock(properties.strength(1f).requiresTool()));
 
 
-
+    //Этот метод регистрирует блок вместе с соответствующим предметом | Основной метод
     private static Block registerBlock(String name, Function<AbstractBlock.Settings, Block> function) {
         Block toRegister = function.apply(AbstractBlock.Settings.create().registryKey(RegistryKey.of(RegistryKeys.BLOCK, Identifier.of(IndustrialLogicCraft.MOD_ID, name))));
         registerBlockItem(name, toRegister);
         return Registry.register(Registries.BLOCK, Identifier.of(IndustrialLogicCraft.MOD_ID, name), toRegister);
     }
 
+    //Похож на первый метод, но регистрирует только блок без создания предмета для него | Технический, вдруг пригодится
     private static Block registerBlockWithoutBlockItem(String name, Function<AbstractBlock.Settings, Block> function){
         return Registry.register(Registries.BLOCK, Identifier.of(IndustrialLogicCraft.MOD_ID, name),
                 function.apply(AbstractBlock.Settings.create().registryKey(RegistryKey.of(RegistryKeys.BLOCK, Identifier.of(IndustrialLogicCraft.MOD_ID, name)))));
     }
 
+    //Этот вспомогательный метод создаёт и регистрирует предмет для блока
     private static void registerBlockItem(String name, Block block) {
         Registry.register(Registries.ITEM, Identifier.of(IndustrialLogicCraft.MOD_ID, name),
                 new BlockItem(block, new Item.Settings().useBlockPrefixedTranslationKey()
                         .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(IndustrialLogicCraft.MOD_ID, name)))));
     }
 
+    // Что-то типо main функции
     public static void registerModBlocks() {
 
         IndustrialLogicCraft.LOGGER.info("Register Mod Blocks " + IndustrialLogicCraft.MOD_ID);

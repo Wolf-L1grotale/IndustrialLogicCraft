@@ -27,6 +27,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
             public void generate() {
                 List<ItemConvertible> COPPER_NUGGET_SMELTABLES = List.of(ModItems.COPPER_NUGGET, ModBlocks.COPPER_ORE_BLOCK);
 
+
                 offerSmelting(COPPER_NUGGET_SMELTABLES, RecipeCategory.MISC, ModItems.COPPER_NUGGET, 0.25f, 200, "copper_nugget");
 
                 offerReversibleCompactingRecipes(RecipeCategory.BUILDING_BLOCKS, ModItems.COPPER_NUGGET, RecipeCategory.DECORATIONS, Items.COPPER_INGOT);

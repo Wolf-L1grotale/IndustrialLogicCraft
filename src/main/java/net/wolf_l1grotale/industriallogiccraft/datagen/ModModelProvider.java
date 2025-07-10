@@ -50,10 +50,10 @@ public class ModModelProvider extends FabricModelProvider {
 
     @Override
     public void generateItemModels(ItemModelGenerator itemModelGenerator) {
-        final Identifier CN = Models.GENERATED.upload(ModItems.COPPER_NUGGET, TextureMap.layer0(Identifier.of(IndustrialLogicCraft.MOD_ID,"item/resource/tcopper_nugget")), itemModelGenerator.modelCollector);
+        final Identifier CN = Models.GENERATED.upload(Identifier.of(IndustrialLogicCraft.MOD_ID, "item/resource/mcopper_nugget"), TextureMap.layer0(Identifier.of(IndustrialLogicCraft.MOD_ID,"item/resource/tcopper_nugget")), itemModelGenerator.modelCollector);
         itemModelGenerator.output.accept(ModItems.COPPER_NUGGET, ItemModels.basic(CN));
 
-        final Identifier CT = Models.GENERATED.upload(ModItems.CHISEL_TOOLS, TextureMap.layer0(Identifier.of(IndustrialLogicCraft.MOD_ID,"item/tools/tchisel")), itemModelGenerator.modelCollector);
+        final Identifier CT = Models.GENERATED.upload(Identifier.of(IndustrialLogicCraft.MOD_ID, "item/tools/mchisel"), TextureMap.layer0(Identifier.of(IndustrialLogicCraft.MOD_ID,"item/tools/tchisel")), itemModelGenerator.modelCollector);
         itemModelGenerator.output.accept(ModItems.CHISEL_TOOLS, ItemModels.basic(CT));
     }
 }

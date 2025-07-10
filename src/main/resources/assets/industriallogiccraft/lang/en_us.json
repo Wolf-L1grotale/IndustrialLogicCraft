@@ -1,6 +1,7 @@
 {
-  "item.industriallogiccraft.copper_ore_block": "Copper Ore",
-  "item.industriallogiccraft.magic_block": "Magic Block",
+  "block.industriallogiccraft.copper_ore_block": "Copper Ore",
+  "block.industriallogiccraft.magic_block": "Magic Block",
+  "block.industriallogiccraft.solid_fuel_generator": "Solid Fuel Generator",
 
 
   "item.industriallogiccraft.copper_nugget": "Copper Nugget",
