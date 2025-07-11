@@ -2,6 +2,8 @@
   "block.industriallogiccraft.copper_ore_block": "Copper Ore",
   "block.industriallogiccraft.magic_block": "Magic Block",
   "block.industriallogiccraft.solid_fuel_generator": "Solid Fuel Generator",
+  "block.industriallogiccraft.pedestal": "Pedestal",
+  "block.industriallogiccraft.growth_chamber": "Growth Chamber",
 
 
   "item.industriallogiccraft.copper_nugget": "Copper Nugget",

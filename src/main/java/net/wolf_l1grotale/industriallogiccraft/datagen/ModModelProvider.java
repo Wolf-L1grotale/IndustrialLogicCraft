@@ -38,6 +38,8 @@ public class ModModelProvider extends FabricModelProvider {
             createSingletonBlockState(ModBlocks.SOLID_FUEL_GENERATOR, createWeightedVariant(SFG))
         );
         blockStateModelGenerator.registerParentedItemModel(ModBlocks.SOLID_FUEL_GENERATOR, SFG);
+
+        registerSimpleBlock(blockStateModelGenerator, ModBlocks.GROWTH_CHAMBER, "block/entity/mgrowth_chamber", "block/entity/tgrowth_chamber");
     }
 
     private void registerSimpleBlock(BlockStateModelGenerator generator, Block block, String modelPath, String texturePath) {

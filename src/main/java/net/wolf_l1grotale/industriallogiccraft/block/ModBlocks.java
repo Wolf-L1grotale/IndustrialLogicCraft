@@ -13,6 +13,7 @@ import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.wolf_l1grotale.industriallogiccraft.IndustrialLogicCraft;
+import net.wolf_l1grotale.industriallogiccraft.block.custom.GrowthChamberBlock;
 import net.wolf_l1grotale.industriallogiccraft.block.custom.MagicBlock;
 import net.wolf_l1grotale.industriallogiccraft.block.custom.PedestalBlock;
 
@@ -37,6 +38,8 @@ public class ModBlocks {
 
     public static final Block PEDESTAL = registerBlock("pedestal",
             properties -> new PedestalBlock(properties.nonOpaque()));
+
+    public static final Block GROWTH_CHAMBER = registerBlock("growth_chamber", GrowthChamberBlock::new);
 
 
     //Этот метод регистрирует блок вместе с соответствующим предметом | Основной метод
