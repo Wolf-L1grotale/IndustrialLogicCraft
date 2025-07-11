@@ -42,10 +42,10 @@ public class PedestalBlock  extends BlockWithEntity implements BlockEntityProvid
         return new PedestalBlockEntity(pos, state);
     }
 
-    /*@Override
+    @Override
     protected BlockRenderType getRenderType(BlockState state) {
         return BlockRenderType.MODEL;
-    }*/
+    }
 
 
     @Override
