@@ -18,7 +18,8 @@ import org.jetbrains.annotations.Nullable;
 import net.wolf_l1grotale.industriallogiccraft.block.entity.custom.PedestalBlockEntity;
 
 public class PedestalBlock  extends BlockWithEntity implements BlockEntityProvider {
-    private static final VoxelShape SHAPE = Block.createCuboidShape(2,0,2,14,13,14);
+    private static final VoxelShape SHAPE =
+            Block.createCuboidShape(2, 0, 2, 14, 13, 14);
     public static final MapCodec<PedestalBlock> CODEC = PedestalBlock.createCodec(PedestalBlock::new);
 
     public PedestalBlock(Settings settings) {
@@ -41,10 +42,10 @@ public class PedestalBlock  extends BlockWithEntity implements BlockEntityProvid
         return new PedestalBlockEntity(pos, state);
     }
 
-    @Override
-    protected BlockRenderType getRenderType(BlockState state){
+    /*@Override
+    protected BlockRenderType getRenderType(BlockState state) {
         return BlockRenderType.MODEL;
-    }
+    }*/
 
 
     @Override
