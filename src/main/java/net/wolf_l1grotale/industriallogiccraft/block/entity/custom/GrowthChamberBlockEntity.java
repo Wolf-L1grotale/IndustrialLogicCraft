@@ -13,10 +13,12 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
@@ -25,8 +27,13 @@ import net.wolf_l1grotale.industriallogiccraft.block.ModBlocks;
 import net.wolf_l1grotale.industriallogiccraft.block.entity.ImplementedInventory;
 import net.wolf_l1grotale.industriallogiccraft.block.entity.ModBlockEntities;
 import net.wolf_l1grotale.industriallogiccraft.item.ModItems;
+import net.wolf_l1grotale.industriallogiccraft.recipe.GrowthChamberRecipe;
+import net.wolf_l1grotale.industriallogiccraft.recipe.GrowthChamberRecipeInput;
+import net.wolf_l1grotale.industriallogiccraft.recipe.ModRecipes;
 import net.wolf_l1grotale.industriallogiccraft.screen.custom.GrowthChamberScreenHandler;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 public class GrowthChamberBlockEntity extends BlockEntity implements ExtendedScreenHandlerFactory<BlockPos>, ImplementedInventory {
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(2, ItemStack.EMPTY);
@@ -122,9 +129,10 @@ public class GrowthChamberBlockEntity extends BlockEntity implements ExtendedScr
     }
 
     private void craftItem() {
-        ItemStack output = new ItemStack(ModItems.COPPER_NUGGET, 6);
+        Optional<RecipeEntry<GrowthChamberRecipe>> recipe = getCurrentRecipe();
 
-        this.removeStack(INPUT_SLOT, 1);
+        ItemStack output = recipe.get().value().output();
+        this.removeStack(INPUT_SLOT, 1); // Жестко определено количество входных ресурсов
         this.setStack(OUTPUT_SLOT, new ItemStack(output.getItem(),
                 this.getStack(OUTPUT_SLOT).getCount() + output.getCount()));
     }
@@ -138,11 +146,18 @@ public class GrowthChamberBlockEntity extends BlockEntity implements ExtendedScr
     }
 
     private boolean hasRecipe() {
-        Item input = ModItems.COPPER_NUGGET;
-        ItemStack output = new ItemStack(ModItems.COPPER_NUGGET, 6);
+        Optional<RecipeEntry<GrowthChamberRecipe>> recipe = getCurrentRecipe();
+        if(recipe.isEmpty()) {
+            return false;
+        }
 
-        return this.getStack(INPUT_SLOT).isOf(input) &&
-                canInsertAmountIntoOutputSlot(output.getCount()) && canInsertItemIntoOutputSlot(output);
+        ItemStack output = recipe.get().value().output();
+        return canInsertAmountIntoOutputSlot(output.getCount()) && canInsertItemIntoOutputSlot(output);
+    }
+
+    private Optional<RecipeEntry<GrowthChamberRecipe>> getCurrentRecipe() {
+        return ((ServerWorld) this.getWorld()).getRecipeManager()
+                .getFirstMatch(ModRecipes.GROWTH_CHAMBER_TYPE, new GrowthChamberRecipeInput(inventory.get(INPUT_SLOT)), this.getWorld());
     }
 
     private boolean canInsertItemIntoOutputSlot(ItemStack output) {

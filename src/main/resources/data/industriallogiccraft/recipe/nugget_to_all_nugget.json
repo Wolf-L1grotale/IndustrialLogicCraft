@@ -1,0 +1,8 @@
+{
+  "type": "industriallogiccraft:growth_chamber",
+  "ingredient": "industriallogiccraft:copper_nugget",
+  "result": {
+    "count": 5,
+    "id": "industriallogiccraft:copper_nugget"
+  }
+}
