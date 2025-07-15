@@ -9,6 +9,7 @@ import net.wolf_l1grotale.industriallogiccraft.IndustrialLogicCraft;
 import net.wolf_l1grotale.industriallogiccraft.block.ModBlocks;
 import net.wolf_l1grotale.industriallogiccraft.block.entity.custom.GrowthChamberBlockEntity;
 import net.wolf_l1grotale.industriallogiccraft.block.entity.custom.PedestalBlockEntity;
+import net.wolf_l1grotale.industriallogiccraft.block.entity.custom.SolidFuelGeneratorBlockEntity;
 
 public class ModBlockEntities {
     public static final BlockEntityType<PedestalBlockEntity> PEDESTAL_BE =
@@ -18,6 +19,10 @@ public class ModBlockEntities {
     public static final BlockEntityType<GrowthChamberBlockEntity> GROWTH_CHAMBER_BE =
             Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(IndustrialLogicCraft.MOD_ID, "growth_chamber_be"),
                     FabricBlockEntityTypeBuilder.create(GrowthChamberBlockEntity::new, ModBlocks.GROWTH_CHAMBER).build());
+
+    public static final BlockEntityType<SolidFuelGeneratorBlockEntity> SOLID_FUEL_GENERATOR_BE =
+            Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(IndustrialLogicCraft.MOD_ID, "solid_fuel_generator_be"),
+                    FabricBlockEntityTypeBuilder.create(SolidFuelGeneratorBlockEntity::new, ModBlocks.SOLID_FUEL_GENERATOR).build());
 
     public static void registerBlockEntities() {
         IndustrialLogicCraft.LOGGER.info("Register Mod Entitys " + IndustrialLogicCraft.MOD_ID);

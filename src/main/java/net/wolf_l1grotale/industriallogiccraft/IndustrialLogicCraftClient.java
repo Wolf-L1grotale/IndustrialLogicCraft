@@ -9,6 +9,7 @@ import net.wolf_l1grotale.industriallogiccraft.block.entity.renderer.PedestalBlo
 import net.wolf_l1grotale.industriallogiccraft.screen.ModScreenHandlers;
 import net.wolf_l1grotale.industriallogiccraft.screen.custom.GrowthChamberScreen;
 import net.wolf_l1grotale.industriallogiccraft.screen.custom.PedestalScreen;
+import net.wolf_l1grotale.industriallogiccraft.screen.custom.SolidFuelGeneratorScreen;
 
 public class IndustrialLogicCraftClient implements ClientModInitializer {
 
@@ -18,6 +19,7 @@ public class IndustrialLogicCraftClient implements ClientModInitializer {
         BlockEntityRendererFactories.register(ModBlockEntities.PEDESTAL_BE, PedestalBlockEntityRenderer::new);
         HandledScreens.register(ModScreenHandlers.PEDESTAL_SCREEN_HANDLER, PedestalScreen::new);
         HandledScreens.register(ModScreenHandlers.GROWTH_CHAMBER_SCREEN_HANDLER, GrowthChamberScreen::new);
+        HandledScreens.register(ModScreenHandlers.SOLID_FUEL_GENERATOR_SCREEN_HANDLER, SolidFuelGeneratorScreen::new);
 
     }
 }

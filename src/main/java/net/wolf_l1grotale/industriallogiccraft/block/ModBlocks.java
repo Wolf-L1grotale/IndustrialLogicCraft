@@ -16,6 +16,7 @@ import net.wolf_l1grotale.industriallogiccraft.IndustrialLogicCraft;
 import net.wolf_l1grotale.industriallogiccraft.block.custom.GrowthChamberBlock;
 import net.wolf_l1grotale.industriallogiccraft.block.custom.MagicBlock;
 import net.wolf_l1grotale.industriallogiccraft.block.custom.PedestalBlock;
+import net.wolf_l1grotale.industriallogiccraft.block.custom.SolidFuelGeneratorBlock;
 
 import java.util.function.Function;
 
@@ -27,12 +28,6 @@ public class ModBlocks {
                     properties.strength(3.0f).requiresTool().sounds(BlockSoundGroup.STONE)));
 
 
-
-
-    public static final Block SOLID_FUEL_GENERATOR = registerBlock("solid_fuel_generator",
-            properties -> new ExperienceDroppingBlock(UniformIntProvider.create(2, 5),
-                    properties.strength(3.0f).requiresTool().sounds(BlockSoundGroup.METAL)));
-
     public static final Block MAGIC_BLOCK = registerBlock("magic_block",
             properties -> new MagicBlock(properties.strength(1f).requiresTool()));
 
@@ -40,6 +35,7 @@ public class ModBlocks {
             properties -> new PedestalBlock(properties.nonOpaque()));
 
     public static final Block GROWTH_CHAMBER = registerBlock("growth_chamber", GrowthChamberBlock::new);
+    public static final Block SOLID_FUEL_GENERATOR = registerBlock("solid_fuel_generator", SolidFuelGeneratorBlock::new);
 
 
     //Этот метод регистрирует блок вместе с соответствующим предметом | Основной метод
