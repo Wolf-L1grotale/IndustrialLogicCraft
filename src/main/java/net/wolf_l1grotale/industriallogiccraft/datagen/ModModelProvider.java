@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.block.Block;
 import net.minecraft.client.data.*;
 import net.minecraft.client.render.model.json.ModelVariantOperator;
+import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.AxisRotation;
 import net.wolf_l1grotale.industriallogiccraft.IndustrialLogicCraft;
@@ -49,6 +50,24 @@ public class ModModelProvider extends FabricModelProvider {
         registerSimpleBlock(blockStateModelGenerator, ModBlocks.GROWTH_CHAMBER, "block/entity/mgrowth_chamber", "block/entity/tgrowth_chamber");
     }
 
+    //Генерация моделей предметов
+    @Override
+    public void generateItemModels(ItemModelGenerator itemModelGenerator) {
+        /* Пример добавления нового Item
+        *
+        * registerSimpleItemModel(
+        * itemModelGenerator,
+        * "Указать Item",
+        * "Путь до модели",
+        * "Путь до текступы");
+        *
+        * */
+
+        registerSimpleItemModel(itemModelGenerator, ModItems.COPPER_NUGGET, "item/resource/mcopper_nugget", "item/resource/tcopper_nugget");
+        registerSimpleItemModel(itemModelGenerator, ModItems.CHISEL_TOOLS, "item/tools/mchisel", "item/tools/tchisel");
+    }
+
+    // Прописываем пути к текстурам на каждой стороне и кастомный путь до модели
     private Identifier createOrientableModel(BlockStateModelGenerator generator, String modelPath, String front, String side, String top) {
         return Models.ORIENTABLE.upload(
             Identifier.of(IndustrialLogicCraft.MOD_ID, modelPath),
@@ -60,6 +79,7 @@ public class ModModelProvider extends FabricModelProvider {
         );
     }
 
+    //Генерируем blockState на основе кастомной модели
     private void registerHorizontalFacingBlock(BlockStateModelGenerator blockStateModelGenerator, Block block, Identifier modelId) {
         WeightedVariant baseVariant = createWeightedVariant(modelId);
         blockStateModelGenerator.blockStateCollector.accept(
@@ -85,12 +105,17 @@ public class ModModelProvider extends FabricModelProvider {
         generator.registerParentedItemModel(block, identifier);
     }
 
-    @Override
-    public void generateItemModels(ItemModelGenerator itemModelGenerator) {
-        final Identifier CN = Models.GENERATED.upload(Identifier.of(IndustrialLogicCraft.MOD_ID, "item/resource/mcopper_nugget"), TextureMap.layer0(Identifier.of(IndustrialLogicCraft.MOD_ID,"item/resource/tcopper_nugget")), itemModelGenerator.modelCollector);
-        itemModelGenerator.output.accept(ModItems.COPPER_NUGGET, ItemModels.basic(CN));
-
-        final Identifier CT = Models.GENERATED.upload(Identifier.of(IndustrialLogicCraft.MOD_ID, "item/tools/mchisel"), TextureMap.layer0(Identifier.of(IndustrialLogicCraft.MOD_ID,"item/tools/tchisel")), itemModelGenerator.modelCollector);
-        itemModelGenerator.output.accept(ModItems.CHISEL_TOOLS, ItemModels.basic(CT));
+    private void registerSimpleItemModel(
+            ItemModelGenerator itemModelGenerator,
+            Item item,
+            String modelPath,
+            String texturePath
+    ) {
+        final Identifier modelId = Models.GENERATED.upload(
+            Identifier.of(IndustrialLogicCraft.MOD_ID, modelPath),
+            TextureMap.layer0(Identifier.of(IndustrialLogicCraft.MOD_ID, texturePath)),
+            itemModelGenerator.modelCollector
+        );
+        itemModelGenerator.output.accept(item, ItemModels.basic(modelId));
     }
 }
