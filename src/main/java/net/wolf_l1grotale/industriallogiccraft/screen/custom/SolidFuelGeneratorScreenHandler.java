@@ -30,8 +30,10 @@ public class SolidFuelGeneratorScreenHandler extends ScreenHandler {
         this.blockEntity = ((SolidFuelGeneratorBlockEntity) blockEntity);
         this.propertyDelegate = arrayPropertyDelegate;
 
-        this.addSlot(new Slot(inventory, 0, 54, 34));
-        this.addSlot(new Slot(inventory, 1, 104, 34));
+
+        //Указывается самый левый верхний пиксель начала слота
+        this.addSlot(new Slot(inventory, 0, 65, 17));
+        this.addSlot(new Slot(inventory, 1, 65, 53));
 
         addPlayerInventory(playerInventory);
         addPlayerHotbar(playerInventory);

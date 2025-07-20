@@ -9,9 +9,9 @@ import net.minecraft.util.Identifier;
 import net.wolf_l1grotale.industriallogiccraft.IndustrialLogicCraft;
 
 public class SolidFuelGeneratorScreen extends HandledScreen<SolidFuelGeneratorScreenHandler> {
-    private static final Identifier GUI_TEXTURE = Identifier.of(IndustrialLogicCraft.MOD_ID, "textures/gui/growth_chamber/tgrowth_chamber_gui.png");
+    private static final Identifier GUI_TEXTURE = Identifier.of(IndustrialLogicCraft.MOD_ID, "textures/gui/generators/electric/tgui_solid_fuel_generator.png");
     private static final Identifier ARROW_TEXTURE =
-            Identifier.of(IndustrialLogicCraft.MOD_ID, "textures/gui/tarrow_progress.png");
+            Identifier.of(IndustrialLogicCraft.MOD_ID, "textures/gui/generators/electric/progress.png");
 
 
     public SolidFuelGeneratorScreen(SolidFuelGeneratorScreenHandler handler, PlayerInventory inventory, Text title) {
@@ -30,8 +30,9 @@ public class SolidFuelGeneratorScreen extends HandledScreen<SolidFuelGeneratorSc
 
     private void renderProgressArrow(DrawContext context, int x, int y) {
         if(handler.isCrafting()) {
-            context.drawTexture(RenderLayer::getGuiTextured, ARROW_TEXTURE, x + 73, y + 35, 0, 0,
-                    handler.getScaledArrowProgress(), 16, 24, 16);
+            // Указывается начальная движения прогресса
+            context.drawTexture(RenderLayer::getGuiTextured, ARROW_TEXTURE, x + 94, y + 35, 0, 0,
+                    handler.getScaledArrowProgress(), 16, 25, 17);
         }
     }
 
