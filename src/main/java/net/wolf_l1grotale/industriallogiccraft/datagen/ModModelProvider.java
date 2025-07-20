@@ -4,15 +4,26 @@ import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.block.Block;
 import net.minecraft.client.data.*;
+import net.minecraft.client.render.model.json.ModelVariantOperator;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.AxisRotation;
 import net.wolf_l1grotale.industriallogiccraft.IndustrialLogicCraft;
 import net.wolf_l1grotale.industriallogiccraft.block.ModBlocks;
 import net.wolf_l1grotale.industriallogiccraft.item.ModItems;
+import net.minecraft.util.math.Direction;
+import net.minecraft.state.property.Properties;
+import net.minecraft.client.render.model.json.WeightedVariant;
+import net.minecraft.client.data.BlockStateVariantMap;
+import net.minecraft.client.data.VariantsBlockModelDefinitionCreator;
+import net.minecraft.client.data.BlockStateModelGenerator;
 
-import static net.minecraft.client.data.BlockStateModelGenerator.createSingletonBlockState;
-import static net.minecraft.client.data.BlockStateModelGenerator.createWeightedVariant;
+import static net.minecraft.client.data.BlockStateModelGenerator.*;
 
 public class ModModelProvider extends FabricModelProvider {
+
+    public static final ModelVariantOperator ROTATE_Y_90 = ModelVariantOperator.ROTATION_Y.withValue(AxisRotation.R90);
+    public static final ModelVariantOperator ROTATE_Y_180 = ModelVariantOperator.ROTATION_Y.withValue(AxisRotation.R180);
+    public static final ModelVariantOperator ROTATE_Y_270 = ModelVariantOperator.ROTATION_Y.withValue(AxisRotation.R270);
 
     public ModModelProvider(FabricDataOutput output) {
         super(output);
@@ -23,6 +34,8 @@ public class ModModelProvider extends FabricModelProvider {
         registerSimpleBlock(blockStateModelGenerator, ModBlocks.COPPER_ORE_BLOCK, "block/resource/mcopper_ore_block", "block/resource/tcopper_ore_block");
         registerSimpleBlock(blockStateModelGenerator, ModBlocks.MAGIC_BLOCK, "block/util/mmagic_block", "block/util/tmagic_block");
 
+        registerSolidFuelGenerator(blockStateModelGenerator);
+
         final Identifier SFG = Models.ORIENTABLE.upload(
             Identifier.of(IndustrialLogicCraft.MOD_ID, "block/generators/electric/solid_fuel_generator/mgenerator"),
             new TextureMap()
@@ -32,14 +45,24 @@ public class ModModelProvider extends FabricModelProvider {
             blockStateModelGenerator.modelCollector
         );
 
-
-
-        blockStateModelGenerator.blockStateCollector.accept(
-            createSingletonBlockState(ModBlocks.SOLID_FUEL_GENERATOR, createWeightedVariant(SFG))
-        );
         blockStateModelGenerator.registerParentedItemModel(ModBlocks.SOLID_FUEL_GENERATOR, SFG);
 
         registerSimpleBlock(blockStateModelGenerator, ModBlocks.GROWTH_CHAMBER, "block/entity/mgrowth_chamber", "block/entity/tgrowth_chamber");
+    }
+
+    private void registerSolidFuelGenerator(BlockStateModelGenerator blockStateModelGenerator) {
+        WeightedVariant baseVariant = createWeightedVariant(Identifier.of(IndustrialLogicCraft.MOD_ID, "block/generators/electric/solid_fuel_generator/mgenerator"));
+
+        blockStateModelGenerator.blockStateCollector.accept(
+            VariantsBlockModelDefinitionCreator.of(ModBlocks.SOLID_FUEL_GENERATOR)
+                .with(
+                    BlockStateVariantMap.models(Properties.HORIZONTAL_FACING)
+                        .register(Direction.NORTH, baseVariant)
+                        .register(Direction.EAST, baseVariant.apply(ROTATE_Y_90))
+                        .register(Direction.SOUTH, baseVariant.apply(ROTATE_Y_180))
+                        .register(Direction.WEST, baseVariant.apply(ROTATE_Y_270))
+                )
+        );
     }
 
     private void registerSimpleBlock(BlockStateModelGenerator generator, Block block, String modelPath, String texturePath) {
