@@ -34,27 +34,36 @@ public class ModModelProvider extends FabricModelProvider {
         registerSimpleBlock(blockStateModelGenerator, ModBlocks.COPPER_ORE_BLOCK, "block/resource/mcopper_ore_block", "block/resource/tcopper_ore_block");
         registerSimpleBlock(blockStateModelGenerator, ModBlocks.MAGIC_BLOCK, "block/util/mmagic_block", "block/util/tmagic_block");
 
-        registerSolidFuelGenerator(blockStateModelGenerator);
-
-        final Identifier SFG = Models.ORIENTABLE.upload(
-            Identifier.of(IndustrialLogicCraft.MOD_ID, "block/generators/electric/solid_fuel_generator/mgenerator"),
-            new TextureMap()
-                .put(TextureKey.FRONT, Identifier.of(IndustrialLogicCraft.MOD_ID, "block/generators/electric/solid_fuel_generator/generator_front"))
-                .put(TextureKey.SIDE, Identifier.of(IndustrialLogicCraft.MOD_ID, "block/generators/electric/solid_fuel_generator/generator_leftrightback"))
-                .put(TextureKey.TOP, Identifier.of(IndustrialLogicCraft.MOD_ID, "block/generators/electric/solid_fuel_generator/generator_top")),
-            blockStateModelGenerator.modelCollector
+        // Для solid_fuel_generator
+        Identifier sfgModel = createOrientableModel(
+            blockStateModelGenerator,
+            "block/generators/electric/solid_fuel_generator/mgenerator",
+            "block/generators/electric/solid_fuel_generator/generator_front",
+            "block/generators/electric/solid_fuel_generator/generator_leftrightback",
+            "block/generators/electric/solid_fuel_generator/generator_top"
         );
+        registerHorizontalFacingBlock(blockStateModelGenerator, ModBlocks.SOLID_FUEL_GENERATOR, sfgModel);
 
-        blockStateModelGenerator.registerParentedItemModel(ModBlocks.SOLID_FUEL_GENERATOR, SFG);
+        // Для других подобных блоков просто вызывайте registerHorizontalFacingBlock с нужными параметрами
 
         registerSimpleBlock(blockStateModelGenerator, ModBlocks.GROWTH_CHAMBER, "block/entity/mgrowth_chamber", "block/entity/tgrowth_chamber");
     }
 
-    private void registerSolidFuelGenerator(BlockStateModelGenerator blockStateModelGenerator) {
-        WeightedVariant baseVariant = createWeightedVariant(Identifier.of(IndustrialLogicCraft.MOD_ID, "block/generators/electric/solid_fuel_generator/mgenerator"));
+    private Identifier createOrientableModel(BlockStateModelGenerator generator, String modelPath, String front, String side, String top) {
+        return Models.ORIENTABLE.upload(
+            Identifier.of(IndustrialLogicCraft.MOD_ID, modelPath),
+            new TextureMap()
+                .put(TextureKey.FRONT, Identifier.of(IndustrialLogicCraft.MOD_ID, front))
+                .put(TextureKey.SIDE, Identifier.of(IndustrialLogicCraft.MOD_ID, side))
+                .put(TextureKey.TOP, Identifier.of(IndustrialLogicCraft.MOD_ID, top)),
+            generator.modelCollector
+        );
+    }
 
+    private void registerHorizontalFacingBlock(BlockStateModelGenerator blockStateModelGenerator, Block block, Identifier modelId) {
+        WeightedVariant baseVariant = createWeightedVariant(modelId);
         blockStateModelGenerator.blockStateCollector.accept(
-            VariantsBlockModelDefinitionCreator.of(ModBlocks.SOLID_FUEL_GENERATOR)
+            VariantsBlockModelDefinitionCreator.of(block)
                 .with(
                     BlockStateVariantMap.models(Properties.HORIZONTAL_FACING)
                         .register(Direction.NORTH, baseVariant)
@@ -63,6 +72,7 @@ public class ModModelProvider extends FabricModelProvider {
                         .register(Direction.WEST, baseVariant.apply(ROTATE_Y_270))
                 )
         );
+        blockStateModelGenerator.registerParentedItemModel(block, modelId);
     }
 
     private void registerSimpleBlock(BlockStateModelGenerator generator, Block block, String modelPath, String texturePath) {
