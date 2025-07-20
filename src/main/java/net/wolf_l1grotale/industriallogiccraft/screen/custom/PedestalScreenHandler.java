@@ -6,11 +6,9 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.math.BlockPos;
 import net.wolf_l1grotale.industriallogiccraft.screen.ModScreenHandlers;
-import org.jetbrains.annotations.Nullable;
 
 public class PedestalScreenHandler extends ScreenHandler {
     private final Inventory inventory;

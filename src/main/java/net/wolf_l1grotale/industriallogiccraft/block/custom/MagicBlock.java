@@ -1,6 +1,5 @@
 package net.wolf_l1grotale.industriallogiccraft.block.custom;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -13,9 +12,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.minecraft.world.World;
-import net.wolf_l1grotale.industriallogiccraft.item.ModItems;
 import net.wolf_l1grotale.industriallogiccraft.util.ModTags;
 
 public class MagicBlock extends Block {

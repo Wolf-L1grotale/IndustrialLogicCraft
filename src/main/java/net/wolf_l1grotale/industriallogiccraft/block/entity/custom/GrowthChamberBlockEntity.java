@@ -1,13 +1,11 @@
 package net.wolf_l1grotale.industriallogiccraft.block.entity.custom;
 
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.listener.ClientPlayPacketListener;
@@ -23,10 +21,8 @@ import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.wolf_l1grotale.industriallogiccraft.block.ModBlocks;
 import net.wolf_l1grotale.industriallogiccraft.block.entity.ImplementedInventory;
 import net.wolf_l1grotale.industriallogiccraft.block.entity.ModBlockEntities;
-import net.wolf_l1grotale.industriallogiccraft.item.ModItems;
 import net.wolf_l1grotale.industriallogiccraft.recipe.GrowthChamberRecipe;
 import net.wolf_l1grotale.industriallogiccraft.recipe.GrowthChamberRecipeInput;
 import net.wolf_l1grotale.industriallogiccraft.recipe.ModRecipes;
