@@ -33,11 +33,11 @@ public class SolidFuelGeneratorScreen extends HandledScreen<SolidFuelGeneratorSc
     }
 
     private void renderProgressArrow(DrawContext context, int x, int y) {
-        if(handler.isCrafting()) {
+        /*if(handler.isCrafting()) {*/
             // Указывается начальная движения прогресса
             context.drawTexture(RenderLayer::getGuiTextured, ARROW_TEXTURE, x + 94, y + 35, 0, 0,
                     handler.getScaledArrowProgress(), 16, 25, 17);
-        }
+        /*}*/
     }
 
     private void renderFireIndicator(DrawContext context, int x, int y) {
