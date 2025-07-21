@@ -43,7 +43,16 @@ public class ModModelProvider extends FabricModelProvider {
             "block/generators/electric/solid_fuel_generator/generator_leftrightback",
             "block/generators/electric/solid_fuel_generator/generator_top"
         );
-        registerHorizontalFacingBlock(blockStateModelGenerator, ModBlocks.SOLID_FUEL_GENERATOR, sfgModel);
+
+        Identifier sfgModel1 = createOrientableModel(
+                blockStateModelGenerator,
+                "block/generators/electric/solid_fuel_generator/mgenerator_on",
+                "block/generators/electric/solid_fuel_generator/generator_front_active",
+                "block/generators/electric/solid_fuel_generator/generator_leftrightback",
+                "block/generators/electric/solid_fuel_generator/generator_top"
+        );
+
+        registerHorizontalFacingBlock(blockStateModelGenerator, ModBlocks.SOLID_FUEL_GENERATOR, sfgModel, sfgModel1);
 
         // Для других подобных блоков просто вызывайте registerHorizontalFacingBlock с нужными параметрами
 
@@ -68,31 +77,66 @@ public class ModModelProvider extends FabricModelProvider {
     }
 
     // Прописываем пути к текстурам на каждой стороне и кастомный путь до модели
-    private Identifier createOrientableModel(BlockStateModelGenerator generator, String modelPath, String front, String side, String top) {
-        return Models.ORIENTABLE.upload(
-            Identifier.of(IndustrialLogicCraft.MOD_ID, modelPath),
-            new TextureMap()
-                .put(TextureKey.FRONT, Identifier.of(IndustrialLogicCraft.MOD_ID, front))
-                .put(TextureKey.SIDE, Identifier.of(IndustrialLogicCraft.MOD_ID, side))
-                .put(TextureKey.TOP, Identifier.of(IndustrialLogicCraft.MOD_ID, top)),
-            generator.modelCollector
+    private Identifier createOrientableModel(BlockStateModelGenerator generator, String modelPath, String front, String side, String top, String front_on) {
+
+        // Создаём обычную модель
+        Identifier normalModel = Models.ORIENTABLE.upload(
+                Identifier.of(IndustrialLogicCraft.MOD_ID, modelPath),
+                new TextureMap()
+                        .put(TextureKey.FRONT, Identifier.of(IndustrialLogicCraft.MOD_ID, front))
+                        .put(TextureKey.SIDE, Identifier.of(IndustrialLogicCraft.MOD_ID, side))
+                        .put(TextureKey.TOP, Identifier.of(IndustrialLogicCraft.MOD_ID, top)),
+                generator.modelCollector
         );
+
+        // Если front_on не задан — возвращаем только обычную модель
+        if (front_on == null) {
+            return normalModel;
+        }
+
+        // Создаём активную модель
+        Models.ORIENTABLE.upload(
+                Identifier.of(IndustrialLogicCraft.MOD_ID, modelPath + "_on"),
+                new TextureMap()
+                        .put(TextureKey.FRONT, Identifier.of(IndustrialLogicCraft.MOD_ID, front_on))
+                        .put(TextureKey.SIDE, Identifier.of(IndustrialLogicCraft.MOD_ID, side))
+                        .put(TextureKey.TOP, Identifier.of(IndustrialLogicCraft.MOD_ID, top)),
+                generator.modelCollector
+        );
+
+        return normalModel; // возвращаем обычную модель как основную
+    }
+
+    // Перегрузка для одного фронта (front_on == null)
+    private Identifier createOrientableModel(BlockStateModelGenerator generator, String modelPath, String front, String side, String top) {
+        return createOrientableModel(generator, modelPath, front, side, top, null);
     }
 
     //Генерируем blockState на основе кастомной модели
-    private void registerHorizontalFacingBlock(BlockStateModelGenerator blockStateModelGenerator, Block block, Identifier modelId) {
+    private void registerHorizontalFacingBlock(BlockStateModelGenerator blockStateModelGenerator, Block block, Identifier modelId, Identifier modelId2) {
         WeightedVariant baseVariant = createWeightedVariant(modelId);
+        WeightedVariant baseVariantOn = modelId2 != null ? createWeightedVariant(modelId2) : baseVariant;
+
         blockStateModelGenerator.blockStateCollector.accept(
             VariantsBlockModelDefinitionCreator.of(block)
                 .with(
-                    BlockStateVariantMap.models(Properties.HORIZONTAL_FACING)
-                        .register(Direction.NORTH, baseVariant)
-                        .register(Direction.EAST, baseVariant.apply(ROTATE_Y_90))
-                        .register(Direction.SOUTH, baseVariant.apply(ROTATE_Y_180))
-                        .register(Direction.WEST, baseVariant.apply(ROTATE_Y_270))
+                    BlockStateVariantMap.models(Properties.HORIZONTAL_FACING, Properties.LIT)
+                        .register(Direction.NORTH, false, baseVariant)
+                        .register(Direction.NORTH, true, baseVariantOn)
+                        .register(Direction.EAST,false, baseVariant.apply(ROTATE_Y_90))
+                        .register(Direction.EAST,true, baseVariantOn.apply(ROTATE_Y_90))
+                        .register(Direction.SOUTH,false, baseVariant.apply(ROTATE_Y_180))
+                        .register(Direction.SOUTH,true, baseVariantOn.apply(ROTATE_Y_180))
+                        .register(Direction.WEST,false, baseVariant.apply(ROTATE_Y_270))
+                        .register(Direction.WEST,true, baseVariantOn.apply(ROTATE_Y_270))
                 )
         );
         blockStateModelGenerator.registerParentedItemModel(block, modelId);
+    }
+
+    // Перегрузка для одного modelId (активная и неактивная одинаковые)
+    private void registerHorizontalFacingBlock(BlockStateModelGenerator blockStateModelGenerator, Block block, Identifier modelId) {
+        registerHorizontalFacingBlock(blockStateModelGenerator, block, modelId, null);
     }
 
     private void registerSimpleBlock(BlockStateModelGenerator generator, Block block, String modelPath, String texturePath) {

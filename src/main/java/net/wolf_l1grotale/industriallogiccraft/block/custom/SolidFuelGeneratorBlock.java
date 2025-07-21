@@ -10,6 +10,7 @@ import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.state.StateManager;
+import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.state.property.Property;
 import net.minecraft.util.ActionResult;
@@ -27,15 +28,17 @@ public class SolidFuelGeneratorBlock extends BlockWithEntity implements BlockEnt
     public static final MapCodec<SolidFuelGeneratorBlock> CODEC = SolidFuelGeneratorBlock.createCodec(SolidFuelGeneratorBlock::new);
 
     public static final Property<Direction> FACING = Properties.HORIZONTAL_FACING;
+    public static final BooleanProperty LIT = Properties.LIT;
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(FACING);
+        builder.add(FACING, LIT);
     }
 
 
     public SolidFuelGeneratorBlock(Settings settings) {
         super(settings);
+        setDefaultState(this.getDefaultState().with(FACING, Direction.NORTH).with(LIT, false));
     }
 
     @Override

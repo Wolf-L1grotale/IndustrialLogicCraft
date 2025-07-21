@@ -1,11 +1,13 @@
 package net.wolf_l1grotale.industriallogiccraft.block.entity.custom;
 
+import it.unimi.dsi.fastutil.objects.Object2IntSortedMap;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.listener.ClientPlayPacketListener;
@@ -28,6 +30,7 @@ import net.wolf_l1grotale.industriallogiccraft.recipe.GrowthChamberRecipeInput;
 import net.wolf_l1grotale.industriallogiccraft.recipe.ModRecipes;
 import net.wolf_l1grotale.industriallogiccraft.screen.custom.SolidFuelGeneratorScreenHandler;
 import org.jetbrains.annotations.Nullable;
+import net.minecraft.item.FuelRegistry;
 
 import java.util.Optional;
 
@@ -36,6 +39,11 @@ public class SolidFuelGeneratorBlockEntity extends BlockEntity implements Extend
 
     private static final int INPUT_SLOT = 0;
     private static final int OUTPUT_SLOT = 1;
+
+    private int energy = 0;
+    private static final int MAX_ENERGY = 10000;
+    private int burnTime = 0; // сколько тиков еще будет гореть текущее топливо
+    private int fuelTime = 0; // сколько всего тиков горит текущее топливо
 
     protected final PropertyDelegate propertyDelegate;
     private int progress = 0;
@@ -139,7 +147,7 @@ public class SolidFuelGeneratorBlockEntity extends BlockEntity implements Extend
     }
 
     public void tick(World world, BlockPos pos, BlockState state) {
-        if(hasRecipe()) {
+        /*if(hasRecipe()) {
             increaseCraftingProgress();
             markDirty(world, pos, state);
 
@@ -149,7 +157,47 @@ public class SolidFuelGeneratorBlockEntity extends BlockEntity implements Extend
             }
         } else {
             resetProgress();
+        }*/
+
+        if (world.isClient) return;
+
+        // Смена состояния блока (LIT)
+        if (burnTime > 0 && !state.get(net.wolf_l1grotale.industriallogiccraft.block.custom.SolidFuelGeneratorBlock.LIT)) {
+            world.setBlockState(pos, state.with(net.wolf_l1grotale.industriallogiccraft.block.custom.SolidFuelGeneratorBlock.LIT, true), 3);
+        } else if (burnTime == 0 && state.get(net.wolf_l1grotale.industriallogiccraft.block.custom.SolidFuelGeneratorBlock.LIT)) {
+            world.setBlockState(pos, state.with(net.wolf_l1grotale.industriallogiccraft.block.custom.SolidFuelGeneratorBlock.LIT, false), 3);
         }
+
+        if (burnTime > 0) {
+            burnTime--;
+            if (energy < MAX_ENERGY) {
+                energy += 10; // например, 10 энергии за тик
+                if (energy > MAX_ENERGY) energy = MAX_ENERGY;
+            }
+        } else {
+            // Попробовать найти топливо в инвентаре и начать сжигать
+            ItemStack fuelStack = getStack(0); // если слот 0 — топливо
+            if (!fuelStack.isEmpty()) {
+                int fuelValue = getFuelTime(world.getFuelRegistry(), fuelStack);
+                if (fuelValue > 0 && energy < MAX_ENERGY) {
+                    burnTime = fuelValue;
+                    fuelTime = fuelValue;
+                    fuelStack.decrement(1);
+                    markDirty();
+                }
+            }
+        }
+    }
+    protected int getFuelTime(FuelRegistry fuelRegistry, ItemStack stack) {
+        return fuelRegistry.getFuelTicks(stack);
+    }
+
+    public float getEnergyProgress() {
+        return (float) energy / (float) MAX_ENERGY;
+    }
+
+    public boolean isBurning() {
+        return burnTime > 0;
     }
 
     @Override
@@ -158,6 +206,9 @@ public class SolidFuelGeneratorBlockEntity extends BlockEntity implements Extend
         Inventories.writeNbt(nbt, inventory, registryLookup);
         nbt.putInt("growth_chamber.progress", progress);
         nbt.putInt("growth_chamber.max_progress", maxProgress);
+        nbt.putInt("Energy", energy);
+        nbt.putInt("BurnTime", burnTime);
+        nbt.putInt("FuelTime", fuelTime);
     }
 
     @Override
@@ -166,6 +217,9 @@ public class SolidFuelGeneratorBlockEntity extends BlockEntity implements Extend
         progress = nbt.getInt("growth_chamber.progress").get();
         maxProgress = nbt.getInt("growth_chamber.max_progress").get();
         super.readNbt(nbt, registryLookup);
+        energy = nbt.getInt("Energy").get();
+        burnTime = nbt.getInt("BurnTime").get();
+        fuelTime = nbt.getInt("FuelTime").get();
     }
 
     @Nullable

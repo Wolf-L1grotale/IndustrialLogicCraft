@@ -75,11 +75,19 @@ public class SolidFuelGeneratorScreenHandler extends ScreenHandler {
     }
 
     public int getScaledArrowProgress() {
-        int progress = this.propertyDelegate.get(0);
+        /*
+         * int progress = this.propertyDelegate.get(0);
         int maxProgress = this.propertyDelegate.get(1); // Max Progress
         int arrowPixelSize = 24; // This is the width in pixels of your arrow
 
         return maxProgress != 0 && progress != 0 ? progress * arrowPixelSize / maxProgress : 0;
+         */
+        int arrowWidth = 25; // ширина текстуры стрелки в пикселях
+        return (int)(blockEntity.getEnergyProgress() * arrowWidth);
+    }
+
+    public boolean isBurning() {
+        return blockEntity.isBurning();
     }
 
     //Как правило, не изменны. Место расположение пользовательского интерфейса
