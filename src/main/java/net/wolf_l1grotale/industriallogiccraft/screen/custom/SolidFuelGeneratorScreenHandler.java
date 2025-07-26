@@ -18,9 +18,9 @@ public class SolidFuelGeneratorScreenHandler extends ScreenHandler {
     private final PropertyDelegate propertyDelegate;
     public final SolidFuelGeneratorBlockEntity blockEntity;
 
-
+    //Конструктор
     public SolidFuelGeneratorScreenHandler(int syncId, PlayerInventory inventory, BlockPos pos) {
-        this(syncId, inventory, inventory.player.getWorld().getBlockEntity(pos), new ArrayPropertyDelegate(2));
+        this(syncId, inventory, inventory.player.getWorld().getBlockEntity(pos), new ArrayPropertyDelegate(6));
     }
 
     public SolidFuelGeneratorScreenHandler(int syncId, PlayerInventory playerInventory,
@@ -82,8 +82,12 @@ public class SolidFuelGeneratorScreenHandler extends ScreenHandler {
 
         return maxProgress != 0 && progress != 0 ? progress * arrowPixelSize / maxProgress : 0;
          */
+        int energy = this.propertyDelegate.get(2);
+        int maxEnergy = this.propertyDelegate.get(3);
         int arrowWidth = 25; // ширина текстуры стрелки в пикселях
-        return (int)(blockEntity.getEnergyProgress() * arrowWidth);
+
+        if (maxEnergy == 0) return 0;
+        return (int) ((float) energy / maxEnergy * arrowWidth);
     }
 
     public boolean isBurning() {
@@ -105,5 +109,14 @@ public class SolidFuelGeneratorScreenHandler extends ScreenHandler {
         for (int i = 0; i < 9; ++i) {
             this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 142));
         }
+    }
+
+    //Сведения о энергии
+    public float getEnergyProgress() {
+        int energy = this.propertyDelegate.get(2);
+        int maxEnergy = this.propertyDelegate.get(3);
+
+        if (maxEnergy == 0) return 0;
+        return (float) energy / maxEnergy;
     }
 }

@@ -7,7 +7,6 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.wolf_l1grotale.industriallogiccraft.IndustrialLogicCraft;
-import net.wolf_l1grotale.industriallogiccraft.block.entity.custom.SolidFuelGeneratorBlockEntity;
 
 public class SolidFuelGeneratorScreen extends HandledScreen<SolidFuelGeneratorScreenHandler> {
     private static final Identifier GUI_TEXTURE = Identifier.of(IndustrialLogicCraft.MOD_ID, "textures/gui/generators/electric/tgui_solid_fuel_generator.png");
@@ -69,7 +68,7 @@ public class SolidFuelGeneratorScreen extends HandledScreen<SolidFuelGeneratorSc
             context.drawTooltip(
                 this.textRenderer,
                 Text.literal("Прогресс заполнения энергии: " +
-                    (int)(handler.blockEntity.getEnergyProgress() * 100) + "%"),
+                    (int)(handler.getEnergyProgress() * 100) + "%"),
                 mouseX, mouseY
             );
         }

@@ -1,13 +1,11 @@
 package net.wolf_l1grotale.industriallogiccraft.block.entity.custom;
 
-import it.unimi.dsi.fastutil.objects.Object2IntSortedMap;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.listener.ClientPlayPacketListener;
@@ -59,6 +57,10 @@ public class SolidFuelGeneratorBlockEntity extends BlockEntity implements Extend
                 return switch (index) {
                     case 0 -> SolidFuelGeneratorBlockEntity.this.progress;
                     case 1 -> SolidFuelGeneratorBlockEntity.this.maxProgress;
+                    case 2 -> SolidFuelGeneratorBlockEntity.this.energy;
+                    case 3 -> SolidFuelGeneratorBlockEntity.this.MAX_ENERGY;
+                    case 4 -> SolidFuelGeneratorBlockEntity.this.burnTime;
+                    case 5 -> SolidFuelGeneratorBlockEntity.this.fuelTime;
                     default -> 0;
                 };
             }
@@ -66,14 +68,17 @@ public class SolidFuelGeneratorBlockEntity extends BlockEntity implements Extend
             @Override
             public void set(int index, int value) {
                 switch (index) {
-                    case 0: SolidFuelGeneratorBlockEntity.this.progress = value;
-                    case 1: SolidFuelGeneratorBlockEntity.this.maxProgress = value;
+                    case 0 -> SolidFuelGeneratorBlockEntity.this.progress = value;
+                    case 1 -> SolidFuelGeneratorBlockEntity.this.maxProgress = value;
+                    case 2 -> SolidFuelGeneratorBlockEntity.this.energy = value;
+                    case 4 -> SolidFuelGeneratorBlockEntity.this.burnTime = value;
+                    case 5 -> SolidFuelGeneratorBlockEntity.this.fuelTime = value;
                 }
             }
 
             @Override
             public int size() {
-                return 2;
+                return 6;
             }
         };
     }
@@ -173,6 +178,7 @@ public class SolidFuelGeneratorBlockEntity extends BlockEntity implements Extend
             if (energy < MAX_ENERGY) {
                 energy += 10; // например, 10 энергии за тик
                 if (energy > MAX_ENERGY) energy = MAX_ENERGY;
+                markDirty();
             }
         } else {
             // Попробовать найти топливо в инвентаре и начать сжигать
@@ -190,10 +196,6 @@ public class SolidFuelGeneratorBlockEntity extends BlockEntity implements Extend
     }
     protected int getFuelTime(FuelRegistry fuelRegistry, ItemStack stack) {
         return fuelRegistry.getFuelTicks(stack);
-    }
-
-    public float getEnergyProgress() {
-        return (float) energy / (float) MAX_ENERGY;
     }
 
     public boolean isBurning() {
