@@ -21,6 +21,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.wolf_l1grotale.industriallogiccraft.block.custom.SolidFuelGeneratorBlock;
 import net.wolf_l1grotale.industriallogiccraft.block.entity.ImplementedInventory;
 import net.wolf_l1grotale.industriallogiccraft.block.entity.ModBlockEntities;
 import net.wolf_l1grotale.industriallogiccraft.recipe.GrowthChamberRecipe;
@@ -166,6 +167,9 @@ public class SolidFuelGeneratorBlockEntity extends BlockEntity implements Extend
 
         if (world.isClient) return;
 
+        boolean wasLit = burnTime > 0;
+        boolean shouldBeLit = false;
+
         // Смена состояния блока (LIT)
         if (burnTime > 0 && !state.get(net.wolf_l1grotale.industriallogiccraft.block.custom.SolidFuelGeneratorBlock.LIT)) {
             world.setBlockState(pos, state.with(net.wolf_l1grotale.industriallogiccraft.block.custom.SolidFuelGeneratorBlock.LIT, true), 3);
@@ -173,25 +177,40 @@ public class SolidFuelGeneratorBlockEntity extends BlockEntity implements Extend
             world.setBlockState(pos, state.with(net.wolf_l1grotale.industriallogiccraft.block.custom.SolidFuelGeneratorBlock.LIT, false), 3);
         }
 
-        if (burnTime > 0) {
+        // Если есть горючее и есть место для энергии - продолжаем работу
+        if (burnTime > 0 && energy < MAX_ENERGY) {
             burnTime--;
-            if (energy < MAX_ENERGY) {
-                energy += 10; // например, 10 энергии за тик
-                if (energy > MAX_ENERGY) energy = MAX_ENERGY;
-                markDirty();
-            }
-        } else {
+            energy += 10; // например, 10 энергии за тик
+            if (energy > MAX_ENERGY) energy = MAX_ENERGY;
+            shouldBeLit = true;
+            markDirty();
+        }
+        // Если хранилище полное - не уменьшаем время горения
+        else if (burnTime > 0 && energy >= MAX_ENERGY) {
+            // Просто ждем, пока энергия не будет использована
+            // burnTime НЕ уменьшается здесь
+            shouldBeLit = false; // Можно также выключить визуальное горение
+        }
+        // Если нет горючего - пробуем загрузить новое только если есть место для энергии
+        else if (energy < MAX_ENERGY) {
             // Попробовать найти топливо в инвентаре и начать сжигать
-            ItemStack fuelStack = getStack(0); // если слот 0 — топливо
+            ItemStack fuelStack = getStack(0);
             if (!fuelStack.isEmpty()) {
                 int fuelValue = getFuelTime(world.getFuelRegistry(), fuelStack);
-                if (fuelValue > 0 && energy < MAX_ENERGY) {
+                if (fuelValue > 0) {
                     burnTime = fuelValue;
                     fuelTime = fuelValue;
                     fuelStack.decrement(1);
                     markDirty();
+                    shouldBeLit = true;
                 }
             }
+        }
+
+        // Обновляем состояние блока, если оно изменилось
+        if (shouldBeLit != wasLit) {
+            world.setBlockState(pos, state.with(SolidFuelGeneratorBlock.LIT, shouldBeLit), 3);
+            markDirty();
         }
     }
     protected int getFuelTime(FuelRegistry fuelRegistry, ItemStack stack) {

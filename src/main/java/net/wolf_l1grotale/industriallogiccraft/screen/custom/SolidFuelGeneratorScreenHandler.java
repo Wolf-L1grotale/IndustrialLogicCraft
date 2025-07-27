@@ -32,8 +32,8 @@ public class SolidFuelGeneratorScreenHandler extends ScreenHandler {
 
 
         //Указывается самый левый верхний пиксель начала слота
-        this.addSlot(new Slot(inventory, 0, 65, 17));
-        this.addSlot(new Slot(inventory, 1, 65, 53));
+        this.addSlot(new Slot(inventory, 0, 65, 53));
+        this.addSlot(new Slot(inventory, 1, 65, 17));
 
         addPlayerInventory(playerInventory);
         addPlayerHotbar(playerInventory);
@@ -118,5 +118,15 @@ public class SolidFuelGeneratorScreenHandler extends ScreenHandler {
 
         if (maxEnergy == 0) return 0;
         return (float) energy / maxEnergy;
+    }
+
+    public int getScaledFuelProgress() {
+        int burnTime = propertyDelegate.get(4); // Индекс из PropertyDelegate для burnTime
+        int fuelTime = propertyDelegate.get(5); // Индекс из PropertyDelegate для fuelTime
+
+        if (fuelTime == 0 || burnTime == 0) return 0;
+
+        // Возвращает значение от 0 до 14 (высота индикатора)
+        return burnTime * 14 / fuelTime;
     }
 }
