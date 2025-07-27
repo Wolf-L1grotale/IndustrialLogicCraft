@@ -48,6 +48,10 @@ public class SolidFuelGeneratorBlockEntity extends BlockEntity implements Extend
     private int progress = 0;
     private int maxProgress = 100;
 
+    private boolean isActuallyBurning = false; // фактическое сжигание топлива
+
+
+
 
     public SolidFuelGeneratorBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.SOLID_FUEL_GENERATOR_BE, pos, state);
@@ -167,33 +171,23 @@ public class SolidFuelGeneratorBlockEntity extends BlockEntity implements Extend
 
         if (world.isClient) return;
 
-        boolean wasLit = burnTime > 0;
-        boolean shouldBeLit = false;
+        isActuallyBurning = false;
 
-        // Смена состояния блока (LIT)
-        if (burnTime > 0 && !state.get(net.wolf_l1grotale.industriallogiccraft.block.custom.SolidFuelGeneratorBlock.LIT)) {
-            world.setBlockState(pos, state.with(net.wolf_l1grotale.industriallogiccraft.block.custom.SolidFuelGeneratorBlock.LIT, true), 3);
-        } else if (burnTime == 0 && state.get(net.wolf_l1grotale.industriallogiccraft.block.custom.SolidFuelGeneratorBlock.LIT)) {
-            world.setBlockState(pos, state.with(net.wolf_l1grotale.industriallogiccraft.block.custom.SolidFuelGeneratorBlock.LIT, false), 3);
-        }
+        boolean isGeneratingEnergy = false;
 
         // Если есть горючее и есть место для энергии - продолжаем работу
         if (burnTime > 0 && energy < MAX_ENERGY) {
             burnTime--;
-            energy += 10; // например, 10 энергии за тик
+            energy += 10;
             if (energy > MAX_ENERGY) energy = MAX_ENERGY;
-            shouldBeLit = true;
+            isGeneratingEnergy = true; // Только здесь блок должен светиться
             markDirty();
         }
-        // Если хранилище полное - не уменьшаем время горения
         else if (burnTime > 0 && energy >= MAX_ENERGY) {
-            // Просто ждем, пока энергия не будет использована
-            // burnTime НЕ уменьшается здесь
-            shouldBeLit = false; // Можно также выключить визуальное горение
+            // Топливо не расходуется если хранилище полное
         }
-        // Если нет горючего - пробуем загрузить новое только если есть место для энергии
         else if (energy < MAX_ENERGY) {
-            // Попробовать найти топливо в инвентаре и начать сжигать
+            // Загрузка нового топлива
             ItemStack fuelStack = getStack(0);
             if (!fuelStack.isEmpty()) {
                 int fuelValue = getFuelTime(world.getFuelRegistry(), fuelStack);
@@ -201,16 +195,17 @@ public class SolidFuelGeneratorBlockEntity extends BlockEntity implements Extend
                     burnTime = fuelValue;
                     fuelTime = fuelValue;
                     fuelStack.decrement(1);
+                    // Не включаем свечение здесь, только на следующем тике
                     markDirty();
-                    shouldBeLit = true;
                 }
             }
         }
 
         // Обновляем состояние блока, если оно изменилось
-        if (shouldBeLit != wasLit) {
-            world.setBlockState(pos, state.with(SolidFuelGeneratorBlock.LIT, shouldBeLit), 3);
-            markDirty();
+        boolean currentLit = state.get(SolidFuelGeneratorBlock.LIT);
+        if (currentLit != isGeneratingEnergy) {
+            // Принудительно обновляем состояние блока
+            world.setBlockState(pos, state.with(SolidFuelGeneratorBlock.LIT, isGeneratingEnergy), 3);
         }
     }
     protected int getFuelTime(FuelRegistry fuelRegistry, ItemStack stack) {
@@ -218,7 +213,7 @@ public class SolidFuelGeneratorBlockEntity extends BlockEntity implements Extend
     }
 
     public boolean isBurning() {
-        return burnTime > 0;
+        return isActuallyBurning;
     }
 
     @Override
@@ -252,5 +247,9 @@ public class SolidFuelGeneratorBlockEntity extends BlockEntity implements Extend
     @Override
     public NbtCompound toInitialChunkDataNbt(RegistryWrapper.WrapperLookup registryLookup) {
         return createNbt(registryLookup);
+    }
+
+    public boolean isEnergyFull() {
+        return energy >= MAX_ENERGY;
     }
 }

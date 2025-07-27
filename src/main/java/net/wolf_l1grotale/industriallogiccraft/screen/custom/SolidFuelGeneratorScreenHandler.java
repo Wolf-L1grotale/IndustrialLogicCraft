@@ -91,7 +91,7 @@ public class SolidFuelGeneratorScreenHandler extends ScreenHandler {
     }
 
     public boolean isBurning() {
-        return blockEntity.isBurning();
+        return blockEntity.isBurning() && !blockEntity.isEnergyFull();
     }
 
     //Как правило, не изменны. Место расположение пользовательского интерфейса
