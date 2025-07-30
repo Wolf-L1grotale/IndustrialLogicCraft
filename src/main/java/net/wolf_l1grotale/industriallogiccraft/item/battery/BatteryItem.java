@@ -2,12 +2,16 @@ package net.wolf_l1grotale.industriallogiccraft.item.battery;
 
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.NbtComponent;
+import net.minecraft.component.type.LoreComponent;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Item.TooltipContext;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.minecraft.client.gui.screen.Screen;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -21,6 +25,8 @@ public class BatteryItem extends Item {
     public int getEnergy(ItemStack stack) {
         NbtComponent nbtComponent = stack.get(DataComponentTypes.CUSTOM_DATA);
         if (nbtComponent == null) {
+            // Если нет NBT данных, обновляем tooltip с 0 энергией
+            updateTooltip(stack);
             return 0;
         }
         return nbtComponent.copyNbt().getInt("Energy").orElse(0);
@@ -33,6 +39,21 @@ public class BatteryItem extends Item {
         
         // Обновляем полоску прочности (инвертируем: больше энергии = меньше урона)
         stack.setDamage(MAX_ENERGY - Math.min(energy, MAX_ENERGY));
+        
+        // Обновляем название с информацией о заряде
+        updateTooltip(stack);
+    }
+    
+    private void updateTooltip(ItemStack stack) {
+        int energy = getEnergy(stack);
+        double percentage = (double) energy / MAX_ENERGY * 100;
+        
+        // Добавляем lore с информацией об энергии
+        Text energyInfo = Text.literal(String.format("Energy: %d / %d (%.1f%%)", energy, MAX_ENERGY, percentage))
+                .formatted(energy > 0 ? Formatting.GREEN : Formatting.RED);
+        
+        LoreComponent lore = new LoreComponent(java.util.List.of(energyInfo));
+        stack.set(DataComponentTypes.LORE, lore);
     }
 
     public int getMaxEnergy() {
@@ -58,11 +79,5 @@ public class BatteryItem extends Item {
         return getEnergy(stack) > 0;
     }
 
-    public void appendTooltip(ItemStack stack, Item.TooltipContext context, List<Text> tooltip, TooltipType type) {
-        int energy = getEnergy(stack);
-        double percentage = (double) energy / MAX_ENERGY * 100;
-        
-        tooltip.add(Text.literal(String.format("Energy: %d / %d (%.1f%%)", energy, MAX_ENERGY, percentage))
-                .formatted(energy > 0 ? Formatting.GREEN : Formatting.RED));
-    }
+
 }
