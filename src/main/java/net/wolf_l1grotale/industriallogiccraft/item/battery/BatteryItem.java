@@ -25,8 +25,6 @@ public class BatteryItem extends Item {
     public int getEnergy(ItemStack stack) {
         NbtComponent nbtComponent = stack.get(DataComponentTypes.CUSTOM_DATA);
         if (nbtComponent == null) {
-            // Если нет NBT данных, обновляем tooltip с 0 энергией
-            updateTooltip(stack);
             return 0;
         }
         return nbtComponent.copyNbt().getInt("Energy").orElse(0);
