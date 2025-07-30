@@ -28,6 +28,7 @@ import net.wolf_l1grotale.industriallogiccraft.recipe.GrowthChamberRecipe;
 import net.wolf_l1grotale.industriallogiccraft.recipe.GrowthChamberRecipeInput;
 import net.wolf_l1grotale.industriallogiccraft.recipe.ModRecipes;
 import net.wolf_l1grotale.industriallogiccraft.screen.custom.SolidFuelGeneratorScreenHandler;
+import net.wolf_l1grotale.industriallogiccraft.item.battery.BatteryItem;
 import org.jetbrains.annotations.Nullable;
 import net.minecraft.item.FuelRegistry;
 
@@ -201,6 +202,9 @@ public class SolidFuelGeneratorBlockEntity extends BlockEntity implements Extend
             }
         }
 
+        // Заряжаем батарейку в выходном слоте
+        chargeBattery();
+        
         // Обновляем состояние блока, если оно изменилось
         boolean currentLit = state.get(SolidFuelGeneratorBlock.LIT);
         if (currentLit != isGeneratingEnergy) {
@@ -251,5 +255,20 @@ public class SolidFuelGeneratorBlockEntity extends BlockEntity implements Extend
 
     public boolean isEnergyFull() {
         return energy >= MAX_ENERGY;
+    }
+    
+    private void chargeBattery() {
+        ItemStack outputStack = getStack(OUTPUT_SLOT);
+        if (outputStack.getItem() instanceof BatteryItem batteryItem) {
+            int currentBatteryEnergy = batteryItem.getEnergy(outputStack);
+            int maxBatteryEnergy = batteryItem.getMaxEnergy();
+            
+            if (currentBatteryEnergy < maxBatteryEnergy && energy > 0) {
+                int transferAmount = Math.min(energy, Math.min(50, maxBatteryEnergy - currentBatteryEnergy));
+                int actualTransferred = batteryItem.receiveEnergy(outputStack, transferAmount);
+                energy -= actualTransferred;
+                markDirty();
+            }
+        }
     }
 }

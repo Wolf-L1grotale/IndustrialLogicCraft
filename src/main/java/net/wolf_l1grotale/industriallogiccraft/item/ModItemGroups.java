@@ -29,6 +29,7 @@ public class ModItemGroups {
                     .entries((displayContext, entries) -> {
                         entries.add(ModItems.COPPER_NUGGET);
                         entries.add(ModItems.CHISEL_TOOLS);
+                        entries.add(ModItems.BATTERY_ITEM);
                     }).build());
 
     public static void registerItemGroups() {
