@@ -1,4 +1,4 @@
-package net.wolf_l1grotale.industriallogiccraft.block.entity.custom;
+package net.wolf_l1grotale.industriallogiccraft.block.entity.generators;
 
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
@@ -21,7 +21,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.wolf_l1grotale.industriallogiccraft.block.custom.SolidFuelGeneratorBlock;
+import net.wolf_l1grotale.industriallogiccraft.block.generators.SolidFuelGeneratorBlock;
 import net.wolf_l1grotale.industriallogiccraft.block.entity.ImplementedInventory;
 import net.wolf_l1grotale.industriallogiccraft.block.entity.ModBlockEntities;
 import net.wolf_l1grotale.industriallogiccraft.recipe.GrowthChamberRecipe;

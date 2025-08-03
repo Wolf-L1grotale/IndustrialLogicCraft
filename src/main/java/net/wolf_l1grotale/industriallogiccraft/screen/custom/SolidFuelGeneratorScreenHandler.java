@@ -10,7 +10,7 @@ import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.math.BlockPos;
-import net.wolf_l1grotale.industriallogiccraft.block.entity.custom.SolidFuelGeneratorBlockEntity;
+import net.wolf_l1grotale.industriallogiccraft.block.entity.generators.SolidFuelGeneratorBlockEntity;
 import net.wolf_l1grotale.industriallogiccraft.screen.ModScreenHandlers;
 
 public class SolidFuelGeneratorScreenHandler extends ScreenHandler {

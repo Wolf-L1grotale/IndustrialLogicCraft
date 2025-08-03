@@ -1,4 +1,4 @@
-package net.wolf_l1grotale.industriallogiccraft.block.custom;
+package net.wolf_l1grotale.industriallogiccraft.block.generators;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.block.*;
@@ -20,7 +20,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import net.wolf_l1grotale.industriallogiccraft.block.entity.ModBlockEntities;
-import net.wolf_l1grotale.industriallogiccraft.block.entity.custom.SolidFuelGeneratorBlockEntity;
+import net.wolf_l1grotale.industriallogiccraft.block.entity.generators.SolidFuelGeneratorBlockEntity;
 import org.jetbrains.annotations.Nullable;
 
 
