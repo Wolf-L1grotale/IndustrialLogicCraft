@@ -21,7 +21,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.wolf_l1grotale.industriallogiccraft.block.generators.SolidFuelGeneratorBlock;
+import net.wolf_l1grotale.industriallogiccraft.block.electric.generators.SolidFuelGeneratorBlock;
 import net.wolf_l1grotale.industriallogiccraft.block.entity.ImplementedInventory;
 import net.wolf_l1grotale.industriallogiccraft.block.entity.ModBlockEntities;
 import net.wolf_l1grotale.industriallogiccraft.recipe.GrowthChamberRecipe;

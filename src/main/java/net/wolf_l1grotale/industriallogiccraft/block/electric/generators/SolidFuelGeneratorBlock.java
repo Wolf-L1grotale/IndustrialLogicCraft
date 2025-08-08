@@ -1,4 +1,4 @@
-package net.wolf_l1grotale.industriallogiccraft.block.generators;
+package net.wolf_l1grotale.industriallogiccraft.block.electric.generators;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.block.*;

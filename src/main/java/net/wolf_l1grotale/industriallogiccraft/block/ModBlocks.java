@@ -16,7 +16,7 @@ import net.wolf_l1grotale.industriallogiccraft.IndustrialLogicCraft;
 import net.wolf_l1grotale.industriallogiccraft.block.custom.GrowthChamberBlock;
 import net.wolf_l1grotale.industriallogiccraft.block.custom.MagicBlock;
 import net.wolf_l1grotale.industriallogiccraft.block.custom.PedestalBlock;
-import net.wolf_l1grotale.industriallogiccraft.block.generators.SolidFuelGeneratorBlock;
+import net.wolf_l1grotale.industriallogiccraft.block.electric.generators.SolidFuelGeneratorBlock;
 
 import java.util.function.Function;
 
