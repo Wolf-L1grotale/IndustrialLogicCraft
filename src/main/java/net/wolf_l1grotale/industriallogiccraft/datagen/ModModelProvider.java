@@ -74,7 +74,7 @@ public class ModModelProvider extends FabricModelProvider {
 
         registerSimpleItemModel(itemModelGenerator, ModItems.COPPER_NUGGET, "item/resource/mcopper_nugget", "item/resource/tcopper_nugget");
         registerSimpleItemModel(itemModelGenerator, ModItems.CHISEL_TOOLS, "item/tools/mchisel", "item/tools/tchisel");
-        registerSimpleItemModel(itemModelGenerator, ModItems.BATTERY_ITEM, "item/battery/mbattery_item", "item/battery/tbattery_item");
+        registerSimpleItemModel(itemModelGenerator, ModItems.BATTERY_ITEM, "item/battery/mbattery_item", "item/battery/tbattery_item_0");
     }
 
     // Прописываем пути к текстурам на каждой стороне и кастомный путь до модели
