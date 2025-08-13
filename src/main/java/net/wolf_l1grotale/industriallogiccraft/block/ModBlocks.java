@@ -17,6 +17,7 @@ import net.wolf_l1grotale.industriallogiccraft.block.custom.GrowthChamberBlock;
 import net.wolf_l1grotale.industriallogiccraft.block.custom.MagicBlock;
 import net.wolf_l1grotale.industriallogiccraft.block.custom.PedestalBlock;
 import net.wolf_l1grotale.industriallogiccraft.block.electric.generators.SolidFuelGeneratorBlock;
+import net.wolf_l1grotale.industriallogiccraft.block.electric.storage.BlockBatteryBox;
 
 import java.util.function.Function;
 
@@ -46,6 +47,12 @@ public class ModBlocks {
             SolidFuelGeneratorBlock::new,
             settings -> settings.strength(4.0f).requiresTool()
                     .luminance(state -> state.get(SolidFuelGeneratorBlock.LIT) ? 13 : 0) // 13 это уровень свячения блока. Стандарт для Печь/горнило: 13
+    );
+
+    public static final Block BLOCK_BATTERY_BOX = registerBlock("block_battery_box",
+            BlockBatteryBox::new,
+            settings -> settings.strength(4.0f).requiresTool()
+                    .luminance(state -> state.get(BlockBatteryBox.LIT) ? 13 : 0) // 13 это уровень свячения блока. Стандарт для Печь/горнило: 13
     );
 
 

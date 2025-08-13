@@ -10,6 +10,7 @@ import net.wolf_l1grotale.industriallogiccraft.IndustrialLogicCraft;
 import net.wolf_l1grotale.industriallogiccraft.screen.custom.GrowthChamberScreenHandler;
 import net.wolf_l1grotale.industriallogiccraft.screen.custom.PedestalScreenHandler;
 import net.wolf_l1grotale.industriallogiccraft.screen.custom.SolidFuelGeneratorScreenHandler;
+import net.wolf_l1grotale.industriallogiccraft.screen.electric.BlockBatteryBoxScreenHandler;
 
 public class ModScreenHandlers {
     public static final ScreenHandlerType<PedestalScreenHandler> PEDESTAL_SCREEN_HANDLER =
@@ -23,6 +24,11 @@ public class ModScreenHandlers {
     public static final ScreenHandlerType<SolidFuelGeneratorScreenHandler> SOLID_FUEL_GENERATOR_SCREEN_HANDLER =
             Registry.register(Registries.SCREEN_HANDLER, Identifier.of(IndustrialLogicCraft.MOD_ID, "solid_fuel_generator_screen_handler"),
                     new ExtendedScreenHandlerType<>(SolidFuelGeneratorScreenHandler::new, BlockPos.PACKET_CODEC));
+
+    public static final ScreenHandlerType<BlockBatteryBoxScreenHandler> BLOCK_BATTERY_BOX_SCREEN_HANDLER =
+            Registry.register(Registries.SCREEN_HANDLER, Identifier.of(IndustrialLogicCraft.MOD_ID, "block_battery_box_screen_handler"),
+                    new ExtendedScreenHandlerType<>(BlockBatteryBoxScreenHandler::new, BlockPos.PACKET_CODEC));
+
     public static void registerScreenHandlers(){
         IndustrialLogicCraft.LOGGER.info("Register Mod Screen " + IndustrialLogicCraft.MOD_ID);
 

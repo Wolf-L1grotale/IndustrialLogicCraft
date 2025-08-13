@@ -38,21 +38,40 @@ public class ModModelProvider extends FabricModelProvider {
         // Для solid_fuel_generator
         Identifier sfgModel = createOrientableModel(
             blockStateModelGenerator,
-            "block/generators/electric/solid_fuel_generator/mgenerator",
-            "block/generators/electric/solid_fuel_generator/generator_front",
-            "block/generators/electric/solid_fuel_generator/generator_leftrightback",
-            "block/generators/electric/solid_fuel_generator/generator_top"
+            "block/electric/generators/solid_fuel_generator/mgenerator",
+            "block/electric/generators/solid_fuel_generator/generator_front",
+            "block/electric/generators/solid_fuel_generator/generator_leftrightback",
+            "block/electric/generators/solid_fuel_generator/generator_top"
         );
 
         Identifier sfgModel1 = createOrientableModel(
                 blockStateModelGenerator,
-                "block/generators/electric/solid_fuel_generator/mgenerator_on",
-                "block/generators/electric/solid_fuel_generator/generator_front_active",
-                "block/generators/electric/solid_fuel_generator/generator_leftrightback",
-                "block/generators/electric/solid_fuel_generator/generator_top"
+                "block/electric/generators/solid_fuel_generator/mgenerator_on",
+                "block/electric/generators/solid_fuel_generator/generator_front_active",
+                "block/electric/generators/solid_fuel_generator/generator_leftrightback",
+                "block/electric/generators/solid_fuel_generator/generator_top"
         );
 
         registerHorizontalFacingBlock(blockStateModelGenerator, ModBlocks.SOLID_FUEL_GENERATOR, sfgModel, sfgModel1);
+
+        // Для block_battery_box
+        Identifier bbbModel = createOrientableModel(
+                blockStateModelGenerator,
+                "block/electric/storage/block_battery_box/mbbb",
+                "block/electric/storage/lv/tblockbat_side",
+                "block/electric/storage/lv/tblockbat_down",
+                "block/electric/storage/lv/tblockbat_top_full"
+        );
+
+        Identifier bbbModel1 = createOrientableModel(
+                blockStateModelGenerator,
+                "block/electric/storage/block_battery_box/mbbb_on",
+                "block/electric/storage/lv/tblockbat_side",
+                "block/electric/storage/lv/tblockbat_down",
+                "block/electric/storage/lv/tblockbat_top_full"
+        );
+
+        registerHorizontalFacingBlock(blockStateModelGenerator, ModBlocks.BLOCK_BATTERY_BOX, bbbModel, bbbModel1);
 
         // Для других подобных блоков просто вызывайте registerHorizontalFacingBlock с нужными параметрами
 

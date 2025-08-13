@@ -21,6 +21,7 @@ public class ModBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 
 
         getOrCreateTagBuilder(BlockTags.NEEDS_IRON_TOOL)
-                .add(ModBlocks.SOLID_FUEL_GENERATOR);
+                .add(ModBlocks.SOLID_FUEL_GENERATOR)
+                .add(ModBlocks.BLOCK_BATTERY_BOX);
     }
 }

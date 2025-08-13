@@ -9,13 +9,13 @@ import net.minecraft.util.Identifier;
 import net.wolf_l1grotale.industriallogiccraft.IndustrialLogicCraft;
 
 public class SolidFuelGeneratorScreen extends HandledScreen<SolidFuelGeneratorScreenHandler> {
-    private static final Identifier GUI_TEXTURE = Identifier.of(IndustrialLogicCraft.MOD_ID, "textures/gui/generators/electric/tgui_solid_fuel_generator.png");
+    private static final Identifier GUI_TEXTURE = Identifier.of(IndustrialLogicCraft.MOD_ID, "textures/gui/electric/generators/tgui_solid_fuel_generator.png");
     private static final Identifier ARROW_TEXTURE =
-            Identifier.of(IndustrialLogicCraft.MOD_ID, "textures/gui/generators/electric/progress.png");
+            Identifier.of(IndustrialLogicCraft.MOD_ID, "textures/gui/electric/generators/progress.png");
     private static final Identifier FIRE_TEXTURE =
-            Identifier.of(IndustrialLogicCraft.MOD_ID, "textures/gui/generators/electric/fire_active.png");
+            Identifier.of(IndustrialLogicCraft.MOD_ID, "textures/gui/electric/generators/fire_active.png");
     private static final Identifier FUEL_TEXTURE =
-            Identifier.of(IndustrialLogicCraft.MOD_ID, "textures/gui/generators/electric/fuel_progress.png");
+            Identifier.of(IndustrialLogicCraft.MOD_ID, "textures/gui/electric/generators/fuel_progress.png");
 
 
     public SolidFuelGeneratorScreen(SolidFuelGeneratorScreenHandler handler, PlayerInventory inventory, Text title) {
