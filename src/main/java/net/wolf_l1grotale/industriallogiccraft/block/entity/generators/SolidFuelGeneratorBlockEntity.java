@@ -20,10 +20,13 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import net.wolf_l1grotale.industriallogiccraft.block.electric.generators.SolidFuelGeneratorBlock;
+import net.wolf_l1grotale.industriallogiccraft.block.electric.wire.CustomWireBlock;
 import net.wolf_l1grotale.industriallogiccraft.block.entity.ImplementedInventory;
 import net.wolf_l1grotale.industriallogiccraft.block.entity.ModBlockEntities;
+import net.wolf_l1grotale.industriallogiccraft.block.entity.wire.CustomWireBlockEntity;
 import net.wolf_l1grotale.industriallogiccraft.recipe.GrowthChamberRecipe;
 import net.wolf_l1grotale.industriallogiccraft.recipe.GrowthChamberRecipeInput;
 import net.wolf_l1grotale.industriallogiccraft.recipe.ModRecipes;
@@ -50,8 +53,6 @@ public class SolidFuelGeneratorBlockEntity extends BlockEntity implements Extend
     private int maxProgress = 100;
 
     private boolean isActuallyBurning = false; // фактическое сжигание топлива
-
-
 
 
     public SolidFuelGeneratorBlockEntity(BlockPos pos, BlockState state) {
@@ -202,7 +203,10 @@ public class SolidFuelGeneratorBlockEntity extends BlockEntity implements Extend
             }
         }
 
-        // Заряжаем батарейку в выходном слоте
+        // 1. передаём энергию в провода | ошибка
+        distributeEnergy(world, pos);
+
+        // 2. заряжаем батарейку в выходном слоте
         chargeBattery();
         
         // Обновляем состояние блока, если оно изменилось
@@ -269,6 +273,30 @@ public class SolidFuelGeneratorBlockEntity extends BlockEntity implements Extend
                 energy -= actualTransferred;
                 markDirty();
             }
+        }
+    }
+
+    private boolean hasConnection(World world, BlockPos pos, Direction dir) {
+        BlockPos neighborPos = pos.offset(dir);
+        BlockState neighborState = world.getBlockState(neighborPos);
+        return neighborState.getBlock() instanceof CustomWireBlock;
+    }
+
+    private void distributeEnergy(World world, BlockPos pos) {
+        if (world.isClient()) return;   // только на сервере
+
+        for (Direction dir : Direction.values()) {
+            // 1. проверяем наличие провода в соседнем блоке
+            if (!hasConnection(world, pos, dir)) continue;
+
+            // 2. получаем соседний блок‑entity
+            BlockEntity be = world.getBlockEntity(pos.offset(dir));
+            if (!(be instanceof CustomWireBlockEntity wireBE)) continue;
+
+            // 3. передаём энергию (можно изменить лимит)
+            int toSend = Math.min(energy, 10);          // 10 RF за тик – можно увеличить
+            int transferred = wireBE.receiveEnergy(toSend, false);
+            energy -= transferred;
         }
     }
 }

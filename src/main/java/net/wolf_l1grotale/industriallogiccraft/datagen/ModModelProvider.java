@@ -33,6 +33,7 @@ public class ModModelProvider extends FabricModelProvider {
     @Override
     public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
         registerSimpleBlock(blockStateModelGenerator, ModBlocks.COPPER_ORE_BLOCK, "block/resource/mcopper_ore_block", "block/resource/tcopper_ore_block");
+        registerSimpleBlock(blockStateModelGenerator, ModBlocks.CUSTOM_WIRE_BLOCK, "block/resource/mcustom_wire_block", "block/resource/tcustom_wire_block");
         registerSimpleBlock(blockStateModelGenerator, ModBlocks.MAGIC_BLOCK, "block/util/mmagic_block", "block/util/tmagic_block");
 
         // Для solid_fuel_generator
@@ -60,7 +61,7 @@ public class ModModelProvider extends FabricModelProvider {
                 "block/electric/storage/block_battery_box/mbbb",
                 "block/electric/storage/lv/tblockbat_side",
                 "block/electric/storage/lv/tblockbat_down",
-                "block/electric/storage/lv/tblockbat_top_full"
+                "block/electric/storage/lv/tblockbat_top_l"
         );
 
         Identifier bbbModel1 = createOrientableModel(
@@ -68,7 +69,7 @@ public class ModModelProvider extends FabricModelProvider {
                 "block/electric/storage/block_battery_box/mbbb_on",
                 "block/electric/storage/lv/tblockbat_side",
                 "block/electric/storage/lv/tblockbat_down",
-                "block/electric/storage/lv/tblockbat_top_full"
+                "block/electric/storage/lv/tblockbat_top_l"
         );
 
         registerHorizontalFacingBlock(blockStateModelGenerator, ModBlocks.BLOCK_BATTERY_BOX, bbbModel, bbbModel1);

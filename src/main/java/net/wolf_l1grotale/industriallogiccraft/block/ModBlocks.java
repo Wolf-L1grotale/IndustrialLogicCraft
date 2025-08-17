@@ -18,6 +18,7 @@ import net.wolf_l1grotale.industriallogiccraft.block.custom.MagicBlock;
 import net.wolf_l1grotale.industriallogiccraft.block.custom.PedestalBlock;
 import net.wolf_l1grotale.industriallogiccraft.block.electric.generators.SolidFuelGeneratorBlock;
 import net.wolf_l1grotale.industriallogiccraft.block.electric.storage.BlockBatteryBox;
+import net.wolf_l1grotale.industriallogiccraft.block.electric.wire.CustomWireBlock;
 
 import java.util.function.Function;
 
@@ -34,6 +35,9 @@ public class ModBlocks {
     public static final Block COPPER_ORE_BLOCK = registerBlock("copper_ore_block",
             properties -> new ExperienceDroppingBlock(UniformIntProvider.create(2, 5),
                     properties.strength(3.0f).requiresTool().sounds(BlockSoundGroup.STONE)));
+
+    public static final Block CUSTOM_WIRE_BLOCK = registerBlock("custom_wire_block",
+            properties -> new CustomWireBlock(properties.strength(1.0f).requiresTool().sounds(BlockSoundGroup.METAL)));
 
 
     public static final Block MAGIC_BLOCK = registerBlock("magic_block",

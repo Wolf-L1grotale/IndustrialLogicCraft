@@ -3,7 +3,6 @@ package net.wolf_l1grotale.industriallogiccraft.block.entity.storage;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
@@ -19,16 +18,18 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
+import net.wolf_l1grotale.industriallogiccraft.block.electric.wire.CustomWireBlock;
+import net.wolf_l1grotale.industriallogiccraft.block.electric.wire.EnergyStorage;
+import net.wolf_l1grotale.industriallogiccraft.block.entity.wire.CustomWireBlockEntity;
 import net.wolf_l1grotale.industriallogiccraft.block.entity.ImplementedInventory;
 import net.wolf_l1grotale.industriallogiccraft.block.entity.ModBlockEntities;
 import net.wolf_l1grotale.industriallogiccraft.item.battery.BatteryItem;
 import net.wolf_l1grotale.industriallogiccraft.screen.electric.BlockBatteryBoxScreenHandler;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Optional;
-
-public class BlockBatteryBoxEntity extends BlockEntity implements ExtendedScreenHandlerFactory<BlockPos>, ImplementedInventory {
+public class BlockBatteryBoxEntity extends BlockEntity implements ExtendedScreenHandlerFactory<BlockPos>, ImplementedInventory, EnergyStorage {
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(2, ItemStack.EMPTY);
 
     private static final int CHARGING_SLOT = 0;
@@ -91,10 +92,40 @@ public class BlockBatteryBoxEntity extends BlockEntity implements ExtendedScreen
 
         if (world.isClient) return;
 
+        // Получаем энергию от проводов
+        receiveEnergyFromWires(world, pos);
+        
         // Заряжаем батарейку в выходном слоте
         chargeBattery();
 
 
+    }
+
+    private boolean hasConnection(World world, BlockPos pos, Direction dir) {
+        BlockPos neighborPos = pos.offset(dir);
+        BlockState neighborState = world.getBlockState(neighborPos);
+        return neighborState.getBlock() instanceof CustomWireBlock;
+    }
+
+    private void receiveEnergyFromWires(World world, BlockPos pos) {
+        if (world.isClient()) return;   // только на сервере
+
+        for (Direction dir : Direction.values()) {
+            // 1. проверяем наличие провода в соседнем блоке
+            if (!hasConnection(world, pos, dir)) continue;
+
+            // 2. получаем соседний блок‑entity
+            BlockEntity be = world.getBlockEntity(pos.offset(dir));
+            if (!(be instanceof CustomWireBlockEntity wireBE)) continue;
+
+            // 3. получаем энергию от провода (можно изменить лимит)
+            int toReceive = Math.min(wireBE.getAmount(), Math.min(50, MAX_ENERGY - energy));  // 50 RF за тик
+            if (toReceive > 0) {
+                int extracted = wireBE.extractEnergy(toReceive, false);
+                energy += extracted;
+                markDirty();
+            }
+        }
     }
 
     private void chargeBattery() {
@@ -136,4 +167,63 @@ public class BlockBatteryBoxEntity extends BlockEntity implements ExtendedScreen
     public NbtCompound toInitialChunkDataNbt(RegistryWrapper.WrapperLookup registryLookup) {
         return createNbt(registryLookup);
     }
+
+    public int receiveEnergy(int maxReceive, boolean simulate) {
+        if (maxReceive <= 0 || isFull()) return 0;
+        int toInsert = Math.min(maxReceive, MAX_ENERGY - energy);
+        if (!simulate) {
+            energy += toInsert;
+            markDirty();
+        }
+        return toInsert;
+    }
+
+    @Override
+    public int extractEnergy(int maxExtract, boolean simulate) {
+        return 0;
+    }
+
+    private boolean isFull() { return energy >= MAX_ENERGY; }
+
+    @Override
+    public long insert(long amount) {
+        // Никакого симуляционного вызова – сразу выполняем вставку.
+        if (amount <= 0 || isFull()) return 0;
+
+        // Сколько можно добавить, не превышая лимит.
+        long toInsert = Math.min(amount, MAX_ENERGY - energy);
+
+        // Фактически кладём энергию и помечаем слот «грязным».
+        energy += toInsert;
+        markDirty();
+
+        return toInsert;          // возвращаем реально вставленное количество
+    }
+
+    @Override
+    public long extract(long amount) {
+        // Нет необходимости в симуляции – сразу выполняем извлечение.
+        if (amount <= 0 || energy == 0) return 0;
+
+        // Сколько реально можно вытащить, не опустев при этом слоты.
+        long toExtract = Math.min(amount, energy);
+
+        // Убираем энергию и отмечаем изменение.
+        energy -= toExtract;
+        markDirty();
+
+        return toExtract;      // реальное количество извлечённой энергии
+    }
+    @Override public int getAmount() { return energy; }
+
+    @Override
+    public void setAmount(int amount) {
+
+    }
+
+    @Override public int getCapacity() { return MAX_ENERGY; }
+    @Override
+    public boolean supportsExtraction() { return false; }
+
+
 }

@@ -12,6 +12,7 @@ import net.wolf_l1grotale.industriallogiccraft.block.entity.custom.GrowthChamber
 import net.wolf_l1grotale.industriallogiccraft.block.entity.custom.PedestalBlockEntity;
 import net.wolf_l1grotale.industriallogiccraft.block.entity.generators.SolidFuelGeneratorBlockEntity;
 import net.wolf_l1grotale.industriallogiccraft.block.entity.storage.BlockBatteryBoxEntity;
+import net.wolf_l1grotale.industriallogiccraft.block.entity.wire.CustomWireBlockEntity;
 
 public class ModBlockEntities {
     public static final BlockEntityType<PedestalBlockEntity> PEDESTAL_BE =
@@ -29,6 +30,10 @@ public class ModBlockEntities {
     public static final BlockEntityType<BlockBatteryBoxEntity> BLOCK_BATTERY_BOX_BE =
             Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(IndustrialLogicCraft.MOD_ID, "block_battery_box_be"),
                     FabricBlockEntityTypeBuilder.create(BlockBatteryBoxEntity::new, new Block[]{ModBlocks.BLOCK_BATTERY_BOX}).build());
+
+    public static final BlockEntityType<CustomWireBlockEntity> CUSTOM_WIRE_BE =
+            Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(IndustrialLogicCraft.MOD_ID, "custom_wire_be"),
+                    FabricBlockEntityTypeBuilder.create(CustomWireBlockEntity::new, new Block[]{ModBlocks.CUSTOM_WIRE_BLOCK}).build());
 
     public static void registerBlockEntities() {
         IndustrialLogicCraft.LOGGER.info("Register Mod Entitys " + IndustrialLogicCraft.MOD_ID);

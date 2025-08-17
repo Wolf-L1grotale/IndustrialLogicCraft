@@ -22,6 +22,7 @@ public class ModItemGroups {
                         entries.add(ModBlocks.PEDESTAL);
                         entries.add(ModBlocks.GROWTH_CHAMBER);
                         entries.add(ModBlocks.BLOCK_BATTERY_BOX);
+                        entries.add(ModBlocks.CUSTOM_WIRE_BLOCK);
                     }).build());
 
     public static final ItemGroup INDUSTRIAL_ITEM_GROUP = Registry.register(Registries.ITEM_GROUP, Identifier.of(IndustrialLogicCraft.MOD_ID, "industrial_item_group"),

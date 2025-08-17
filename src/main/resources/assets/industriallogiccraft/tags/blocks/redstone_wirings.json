@@ -1,0 +1,6 @@
+{
+  "replace": false,
+  "values": [
+    "mymod:custom_wire"   // ваш собственный провод
+  ]
+}
