@@ -31,10 +31,6 @@ public class CustomWireBlock extends BlockWithEntity {
     private static final TagKey<Block> REDSTONE_WIRINGS =
             TagKey.of(RegistryKeys.BLOCK, Identifier.of(IndustrialLogicCraft.MOD_ID, "redstone_wirings"));
 
-
-    // Минимальная форма – тонкая линия в центре блока
-    private static final VoxelShape SHAPE = createVoxelShape();
-
     //Конструктор
     public CustomWireBlock(Settings settings) {
         super(settings);
@@ -60,20 +56,6 @@ public class CustomWireBlock extends BlockWithEntity {
         super.appendProperties(builder);
         builder.add(NORTH, EAST, SOUTH, WEST);
 
-    }
-
-    /* ---------- Определяем форму для коллизий ---------- */
-    private static VoxelShape createVoxelShape() {
-        // 0.4-0.6 по X и Z, 0-1 по Y (тонкая линия)
-        return VoxelShapes.cuboid(0.4D, 0.0D, 0.4D, 0.6D, 1.0D, 0.6D);
-    }
-
-    @Override
-    public VoxelShape getOutlineShape(BlockState state,
-                                      BlockView world,
-                                      BlockPos pos,
-                                      ShapeContext context) {
-        return SHAPE;
     }
 
     /* ---------- Логика соединения с соседними блоками ---------- */
