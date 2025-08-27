@@ -23,7 +23,7 @@ public class BlockBatteryBoxScreenHandler extends ScreenHandler {
 
     //Конструктор
     public BlockBatteryBoxScreenHandler(int syncId, PlayerInventory inventory, BlockPos pos) {
-        this(syncId, inventory, inventory.player.getWorld().getBlockEntity(pos), new ArrayPropertyDelegate(6));
+        this(syncId, inventory, inventory.player.getWorld().getBlockEntity(pos), new ArrayPropertyDelegate(2));
     }
 
     public BlockBatteryBoxScreenHandler(int syncId, PlayerInventory playerInventory,
@@ -77,8 +77,8 @@ public class BlockBatteryBoxScreenHandler extends ScreenHandler {
 
     public int getScaledArrowProgressEnegryCharge() {
 
-        int energy = this.propertyDelegate.get(2);
-        int maxEnergy = this.propertyDelegate.get(3);
+        int energy = this.propertyDelegate.get(0);
+        int maxEnergy = this.propertyDelegate.get(1);
         int arrowWidth = 25; // ширина текстуры стрелки в пикселях
 
         if (maxEnergy == 0) return 0;
@@ -103,8 +103,8 @@ public class BlockBatteryBoxScreenHandler extends ScreenHandler {
 
     //Сведения о энергии
     public float getEnergyProgress() {
-        int energy = this.propertyDelegate.get(2);
-        int maxEnergy = this.propertyDelegate.get(3);
+        int energy = this.propertyDelegate.get(0);
+        int maxEnergy = this.propertyDelegate.get(1);
 
         if (maxEnergy == 0) return 0;
         return (float) energy / maxEnergy;

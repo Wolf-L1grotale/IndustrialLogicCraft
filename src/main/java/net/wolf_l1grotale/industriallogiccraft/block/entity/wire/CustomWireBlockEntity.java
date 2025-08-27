@@ -10,7 +10,9 @@ import net.wolf_l1grotale.industriallogiccraft.block.electric.wire.CustomWireBlo
 import net.wolf_l1grotale.industriallogiccraft.block.electric.wire.EnergyStorage;
 import net.wolf_l1grotale.industriallogiccraft.block.entity.ModBlockEntities;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 
 public class CustomWireBlockEntity extends BlockEntity implements EnergyStorage {
@@ -65,37 +67,92 @@ public class CustomWireBlockEntity extends BlockEntity implements EnergyStorage 
 
     @Override
     public long insert(long amount) {
-        return 0;
+        return receiveEnergy((int) Math.min(amount, Integer.MAX_VALUE), false);
     }
 
     @Override
     public long extract(long amount) {
-        return 0;
+        return extractEnergy((int) Math.min(amount, Integer.MAX_VALUE), false);
     }
 
     @Override
     public boolean supportsExtraction() {
-        return false;
+        return true;
+    }
+
+    @Override
+    public boolean supportsInsertion() {
+        return true;  // Провод должен и принимать, и отдавать энергию
     }
 
     /* ---------- Тик‑логика провода ---------- */
     public void tick(World world, BlockPos pos, BlockState state) {
-        // 1. Сохраняем энергию от соседей (если они тоже проводы)
-        for (Direction dir : Direction.values()) {
-            if (!hasConnection(state, dir.getOpposite())) continue;   // если нет соединения – пропускаем
-            BlockEntity neighborBE = world.getBlockEntity(pos.offset(dir));
-            if (!(neighborBE instanceof CustomWireBlockEntity)) continue;
-            CustomWireBlockEntity neighbor = (CustomWireBlockEntity) neighborBE;
+        if (world.isClient) return;
 
-            int toTransfer = Math.min(MAX_TRANSFER, Math.min(neighbor.energy, this.CAPACITY - this.energy));
-            if (toTransfer > 0) {
-                // реальный перенос
-                neighbor.extractEnergy(toTransfer, false);
-                this.receiveEnergy(toTransfer, false);
+        Set<BlockPos> extractedFrom = new HashSet<>();
+
+        // --- Подсасываем энергию ---
+        for (Direction dir : Direction.values()) {
+            if (isFull()) break;
+
+            // Проверяем, можем ли взаимодействовать в этом направлении
+            if (!canInteract(world, pos, state, dir)) continue;
+
+            BlockPos neighborPos = pos.offset(dir);
+            BlockEntity be = world.getBlockEntity(neighborPos);
+            if (!(be instanceof EnergyStorage source)) continue;
+            if (!source.supportsExtraction()) continue;
+
+            int free = CAPACITY - energy;
+            int toExtract = Math.min(MAX_TRANSFER, Math.min(free, source.getAmount()));
+            if (toExtract > 0) {
+                int extracted = source.extractEnergy(toExtract, false);
+                if (extracted > 0) {
+                    energy += extracted;
+                    extractedFrom.add(neighborPos);
+                    markDirty();
+                }
             }
         }
 
-        // 2. Можно добавить логику генерации/поглощения энергии здесь.
+        // --- Отдаём энергию ---
+        if (energy > 0) {
+            for (Direction dir : Direction.values()) {
+                if (energy <= 0) break;
+
+                // Проверяем, можем ли взаимодействовать в этом направлении
+                if (!canInteract(world, pos, state, dir)) continue;
+
+                BlockPos neighborPos = pos.offset(dir);
+                if (extractedFrom.contains(neighborPos)) continue;
+
+                BlockEntity be = world.getBlockEntity(neighborPos);
+                if (!(be instanceof EnergyStorage sink)) continue;
+                if (!sink.supportsInsertion()) continue;
+
+                int toSend = Math.min(MAX_TRANSFER, energy);
+                int accepted = sink.receiveEnergy(toSend, true);
+
+                if (accepted > 0) {
+                    int sent = sink.receiveEnergy(accepted, false);
+                    energy -= sent;
+                    if (sent > 0) {
+                        markDirty();
+                        //System.out.println("Wire at " + pos + " sent " + sent + " energy to " + neighborPos);
+                    }
+                }
+            }
+        }
+    }
+
+    private boolean canInteract(World world, BlockPos pos, BlockState state, Direction dir) {
+        // Если это провод — проверяем property
+        if (state.getBlock() instanceof CustomWireBlock && hasConnection(state, dir)) {
+            return true;
+        }
+        // Если сосед EnergyStorage — разрешаем
+        BlockEntity be = world.getBlockEntity(pos.offset(dir));
+        return be instanceof EnergyStorage;
     }
 
     /* ---------- Утилиты ---------- */

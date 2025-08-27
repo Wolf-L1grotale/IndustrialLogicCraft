@@ -10,4 +10,5 @@ public interface EnergyStorage {
     long extract(long amount);
 
     boolean supportsExtraction();
+    boolean supportsInsertion(); // добавить этот метод
 }

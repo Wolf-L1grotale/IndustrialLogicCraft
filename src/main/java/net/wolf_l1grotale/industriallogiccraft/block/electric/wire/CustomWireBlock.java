@@ -2,22 +2,26 @@ package net.wolf_l1grotale.industriallogiccraft.block.electric.wire;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
-import net.minecraft.block.ShapeContext;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
+import net.minecraft.world.World;
 import net.wolf_l1grotale.industriallogiccraft.IndustrialLogicCraft;
+import net.wolf_l1grotale.industriallogiccraft.block.entity.ModBlockEntities;
 import net.wolf_l1grotale.industriallogiccraft.block.entity.wire.CustomWireBlockEntity;
 
 public class CustomWireBlock extends BlockWithEntity {
@@ -80,6 +84,12 @@ public class CustomWireBlock extends BlockWithEntity {
     // Проверяем, может ли соседний блок «подключиться» к проводу
     private boolean isConnected(BlockView world, BlockPos pos) {
         return world.getBlockState(pos).isIn(REDSTONE_WIRINGS);
+    }
+
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+        return world.isClient ? null : validateTicker(type, ModBlockEntities.CUSTOM_WIRE_BE,
+                (world1, pos, state1, blockEntity) -> blockEntity.tick(world1, pos, state1));
     }
 
 

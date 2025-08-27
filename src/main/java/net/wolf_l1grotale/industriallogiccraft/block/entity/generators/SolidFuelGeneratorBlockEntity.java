@@ -24,6 +24,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import net.wolf_l1grotale.industriallogiccraft.block.electric.generators.SolidFuelGeneratorBlock;
 import net.wolf_l1grotale.industriallogiccraft.block.electric.wire.CustomWireBlock;
+import net.wolf_l1grotale.industriallogiccraft.block.electric.wire.EnergyStorage;
 import net.wolf_l1grotale.industriallogiccraft.block.entity.ImplementedInventory;
 import net.wolf_l1grotale.industriallogiccraft.block.entity.ModBlockEntities;
 import net.wolf_l1grotale.industriallogiccraft.block.entity.wire.CustomWireBlockEntity;
@@ -37,7 +38,7 @@ import net.minecraft.item.FuelRegistry;
 
 import java.util.Optional;
 
-public class SolidFuelGeneratorBlockEntity extends BlockEntity implements ExtendedScreenHandlerFactory<BlockPos>, ImplementedInventory {
+public class SolidFuelGeneratorBlockEntity extends BlockEntity implements ExtendedScreenHandlerFactory<BlockPos>, ImplementedInventory, EnergyStorage {
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(2, ItemStack.EMPTY);
 
     private static final int INPUT_SLOT = 0;
@@ -298,5 +299,57 @@ public class SolidFuelGeneratorBlockEntity extends BlockEntity implements Extend
             int transferred = wireBE.receiveEnergy(toSend, false);
             energy -= transferred;
         }
+    }
+
+    @Override
+    public int getCapacity() {
+        return MAX_ENERGY;
+    }
+
+    @Override
+    public int getAmount() {
+        return energy;
+    }
+
+    @Override
+    public void setAmount(int amount) {
+        this.energy = Math.max(0, Math.min(amount, MAX_ENERGY));
+        markDirty();
+    }
+
+    @Override
+    public int receiveEnergy(int maxReceive, boolean simulate) {
+        return 0; // Генератор не принимает энергию
+    }
+
+    @Override
+    public int extractEnergy(int maxExtract, boolean simulate) {
+        if (maxExtract <= 0 || energy <= 0) return 0;
+        int extracted = Math.min(maxExtract, energy);
+        if (!simulate) {
+            energy -= extracted;
+            markDirty();
+        }
+        return extracted;
+    }
+
+    @Override
+    public long insert(long amount) {
+        return 0; // Генератор не принимает энергию
+    }
+
+    @Override
+    public long extract(long amount) {
+        return extractEnergy((int) Math.min(amount, Integer.MAX_VALUE), false);
+    }
+
+    @Override
+    public boolean supportsExtraction() {
+        return true; // Генератор отдает энергию
+    }
+
+    @Override
+    public boolean supportsInsertion() {
+        return false; // Генератор не принимает энергию
     }
 }
