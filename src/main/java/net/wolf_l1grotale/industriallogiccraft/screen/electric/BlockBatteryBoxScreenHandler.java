@@ -8,13 +8,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ArrayPropertyDelegate;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.math.BlockPos;
-import net.wolf_l1grotale.industriallogiccraft.block.entity.generators.SolidFuelGeneratorBlockEntity;
 import net.wolf_l1grotale.industriallogiccraft.block.entity.storage.BlockBatteryBoxEntity;
 import net.wolf_l1grotale.industriallogiccraft.screen.ModScreenHandlers;
-import org.jetbrains.annotations.Nullable;
 
 public class BlockBatteryBoxScreenHandler extends ScreenHandler {
     private final Inventory inventory;
