@@ -14,9 +14,11 @@ import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.wolf_l1grotale.industriallogiccraft.IndustrialLogicCraft;
+import net.wolf_l1grotale.industriallogiccraft.block.base.BaseBlockWithEntity;
 import net.wolf_l1grotale.industriallogiccraft.block.custom.GrowthChamberBlock;
 import net.wolf_l1grotale.industriallogiccraft.block.custom.MagicBlock;
 import net.wolf_l1grotale.industriallogiccraft.block.custom.PedestalBlock;
+import net.wolf_l1grotale.industriallogiccraft.block.electric.generators.GeothermalGeneratorBlock;
 import net.wolf_l1grotale.industriallogiccraft.block.electric.generators.SolidFuelGeneratorBlock;
 import net.wolf_l1grotale.industriallogiccraft.block.electric.storage.BlockBatteryBox;
 import net.wolf_l1grotale.industriallogiccraft.block.electric.wire.CustomWireBlock;
@@ -74,6 +76,13 @@ public class ModBlocks {
             .luminance(state -> state.get(SolidFuelGeneratorBlock.LIT) ? 13 : 0)
             .factory(SolidFuelGeneratorBlock::new)
             .build();
+
+    /*public static final Block GEOTHERMAL_GENERATOR = BlockBuilder.create("geothermal_generator")
+            .strength(4.0f)
+            .requiresTool()
+            .luminance(13)
+            .factory(GeothermalGeneratorBlock::new)
+            .build();*/
 
     // ===== ХРАНИЛИЩА ЭНЕРГИИ =====
     public static final Block BLOCK_BATTERY_BOX = BlockBuilder.create("block_battery_box")
