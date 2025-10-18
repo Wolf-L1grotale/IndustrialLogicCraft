@@ -12,7 +12,8 @@ import net.minecraft.util.math.BlockPos;
 import net.wolf_l1grotale.industriallogiccraft.IndustrialLogicCraft;
 import net.wolf_l1grotale.industriallogiccraft.screen.custom.GrowthChamberScreenHandler;
 import net.wolf_l1grotale.industriallogiccraft.screen.custom.PedestalScreenHandler;
-import net.wolf_l1grotale.industriallogiccraft.screen.custom.SolidFuelGeneratorScreenHandler;
+import net.wolf_l1grotale.industriallogiccraft.screen.generators.GeothermalGeneratorScreenHandler;
+import net.wolf_l1grotale.industriallogiccraft.screen.generators.SolidFuelGeneratorScreenHandler;
 import net.wolf_l1grotale.industriallogiccraft.screen.electric.BlockBatteryBoxScreenHandler;
 
 /**
@@ -33,6 +34,9 @@ public class ModScreenHandlers {
     // ===== ГЕНЕРАТОРЫ =====
     public static final ScreenHandlerType<SolidFuelGeneratorScreenHandler> SOLID_FUEL_GENERATOR_SCREEN_HANDLER =
             ScreenHandlerBuilder.createForBlockPos("solid_fuel_generator_screen_handler", SolidFuelGeneratorScreenHandler::new)
+                    .build();
+    public static final ScreenHandlerType<GeothermalGeneratorScreenHandler> GEOTHERMAL_GENERATOR_SCREEN_HANDLER =
+            ScreenHandlerBuilder.createForBlockPos("geothermal_generator_screen_handler", GeothermalGeneratorScreenHandler::new)
                     .build();
 
     // ===== ХРАНИЛИЩА ЭНЕРГИИ =====

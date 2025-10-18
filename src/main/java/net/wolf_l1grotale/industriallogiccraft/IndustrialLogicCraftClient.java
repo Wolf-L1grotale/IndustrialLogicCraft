@@ -1,27 +1,21 @@
 package net.wolf_l1grotale.industriallogiccraft;
 
 import net.fabricmc.api.ClientModInitializer;
-import net.minecraft.client.gui.screen.ingame.HandledScreens;
-import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
-import net.wolf_l1grotale.industriallogiccraft.block.electric.storage.BlockBatteryBox;
-import net.wolf_l1grotale.industriallogiccraft.block.entity.ModBlockEntities;
-import net.wolf_l1grotale.industriallogiccraft.block.entity.renderer.PedestalBlockEntityRenderer;
-import net.wolf_l1grotale.industriallogiccraft.screen.ModScreenHandlers;
-import net.wolf_l1grotale.industriallogiccraft.screen.custom.GrowthChamberScreen;
-import net.wolf_l1grotale.industriallogiccraft.screen.custom.PedestalScreen;
-import net.wolf_l1grotale.industriallogiccraft.screen.custom.SolidFuelGeneratorScreen;
-import net.wolf_l1grotale.industriallogiccraft.screen.electric.BlockBatteryBoxScreen;
+import net.wolf_l1grotale.industriallogiccraft.client.ClientRegistry;
+import net.wolf_l1grotale.industriallogiccraft.client.ModScreens;
+import net.wolf_l1grotale.industriallogiccraft.client.ModBlockEntityRenderers;
 
 public class IndustrialLogicCraftClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
+        // Регистрируем все экраны
+        ModScreens.register();
 
-        BlockEntityRendererFactories.register(ModBlockEntities.PEDESTAL_BE, PedestalBlockEntityRenderer::new);
-        HandledScreens.register(ModScreenHandlers.PEDESTAL_SCREEN_HANDLER, PedestalScreen::new);
-        HandledScreens.register(ModScreenHandlers.GROWTH_CHAMBER_SCREEN_HANDLER, GrowthChamberScreen::new);
-        HandledScreens.register(ModScreenHandlers.SOLID_FUEL_GENERATOR_SCREEN_HANDLER, SolidFuelGeneratorScreen::new);
-        HandledScreens.register(ModScreenHandlers.BLOCK_BATTERY_BOX_SCREEN_HANDLER, BlockBatteryBoxScreen::new);
+        // Регистрируем все рендереры
+        ModBlockEntityRenderers.register();
 
+        // Инициализируем всё
+        ClientRegistry.initialize();
     }
 }

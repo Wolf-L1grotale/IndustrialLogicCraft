@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 import net.wolf_l1grotale.industriallogiccraft.block.electric.generators.SolidFuelGeneratorBlock;
 import net.wolf_l1grotale.industriallogiccraft.block.entity.ModBlockEntities;
 import net.wolf_l1grotale.industriallogiccraft.block.entity.base.BaseEnergyBlockEntity;
-import net.wolf_l1grotale.industriallogiccraft.screen.custom.SolidFuelGeneratorScreenHandler;
+import net.wolf_l1grotale.industriallogiccraft.screen.generators.SolidFuelGeneratorScreenHandler;
 import org.jetbrains.annotations.Nullable;
 
 /**
