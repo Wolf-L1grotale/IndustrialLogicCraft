@@ -77,12 +77,12 @@ public class ModBlocks {
             .factory(SolidFuelGeneratorBlock::new)
             .build();
 
-    /*public static final Block GEOTHERMAL_GENERATOR = BlockBuilder.create("geothermal_generator")
+    public static final Block GEOTHERMAL_GENERATOR = BlockBuilder.create("geothermal_generator")
             .strength(4.0f)
             .requiresTool()
             .luminance(13)
             .factory(GeothermalGeneratorBlock::new)
-            .build();*/
+            .build();
 
     // ===== ХРАНИЛИЩА ЭНЕРГИИ =====
     public static final Block BLOCK_BATTERY_BOX = BlockBuilder.create("block_battery_box")

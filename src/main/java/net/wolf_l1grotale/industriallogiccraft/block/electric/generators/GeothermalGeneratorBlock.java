@@ -13,7 +13,7 @@ public class GeothermalGeneratorBlock extends BaseBlockWithEntity {
 
     public static final IntProperty PROGRESS = IntProperty.of("progress", 0, 100);
 
-    protected GeothermalGeneratorBlock(Settings settings) {
+    public GeothermalGeneratorBlock(Settings settings) {
         super(settings);
     }
 

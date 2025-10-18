@@ -33,7 +33,7 @@ public class ModItemGroups {
             .add(ModBlocks.COPPER_ORE_BLOCK)
             // Генераторы
             .add(ModBlocks.SOLID_FUEL_GENERATOR)
-            //.add(ModBlocks.GEOTHERMAL_GENERATOR)
+            .add(ModBlocks.GEOTHERMAL_GENERATOR)
             // Хранилища энергии
             .add(ModBlocks.BLOCK_BATTERY_BOX)
             // Провода

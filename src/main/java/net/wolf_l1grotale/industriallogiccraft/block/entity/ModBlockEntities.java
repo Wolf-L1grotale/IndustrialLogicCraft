@@ -39,10 +39,10 @@ public class ModBlockEntities {
                     .addBlock(ModBlocks.SOLID_FUEL_GENERATOR)
                     .build();
 
-    /*public static final BlockEntityType<GeothermalGeneratorBlockEntity> GEOTHERMAL_GENERATOR_BE =
+    public static final BlockEntityType<GeothermalGeneratorBlockEntity> GEOTHERMAL_GENERATOR_BE =
             BlockEntityBuilder.create("geothermal_generator_be", GeothermalGeneratorBlockEntity::new)
                     .addBlock(ModBlocks.GEOTHERMAL_GENERATOR)
-                    .build();*/
+                    .build();
 
     // ===== ХРАНИЛИЩА ЭНЕРГИИ =====
     public static final BlockEntityType<BlockBatteryBoxEntity> BLOCK_BATTERY_BOX_BE =

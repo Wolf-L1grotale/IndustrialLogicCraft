@@ -27,7 +27,7 @@ public class GeothermalGeneratorBlockEntity extends BaseEnergyBlockEntity {
         super(type, pos, state, config);
     }
 
-    /*public GeothermalGeneratorBlockEntity(BlockPos pos, BlockState state) {
+    public GeothermalGeneratorBlockEntity(BlockPos pos, BlockState state) {
         super(
                 ModBlockEntities.GEOTHERMAL_GENERATOR_BE,
                 pos,
@@ -44,7 +44,7 @@ public class GeothermalGeneratorBlockEntity extends BaseEnergyBlockEntity {
                         .withFuelBurning()             // Сжигает топливо
                         .build()
         );
-    }*/
+    }
 
     @Override
     public Text getDisplayName() {
