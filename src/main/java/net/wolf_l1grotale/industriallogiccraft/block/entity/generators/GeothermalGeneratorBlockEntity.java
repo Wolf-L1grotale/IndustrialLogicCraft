@@ -8,8 +8,10 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.wolf_l1grotale.industriallogiccraft.block.electric.generators.GeothermalGeneratorBlock;
 import net.wolf_l1grotale.industriallogiccraft.block.entity.ModBlockEntities;
 import net.wolf_l1grotale.industriallogiccraft.block.entity.base.BaseEnergyBlockEntity;
+import net.wolf_l1grotale.industriallogiccraft.screen.generators.GeothermalGeneratorScreenHandler;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -48,16 +50,27 @@ public class GeothermalGeneratorBlockEntity extends BaseEnergyBlockEntity {
 
     @Override
     public Text getDisplayName() {
-        return null;
+        return Text.translatable("block.industriallogiccraft.geothermal_generator");
     }
 
+    @Nullable
     @Override
-    public @Nullable ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-        return null;
+    public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
+        return new GeothermalGeneratorScreenHandler(syncId, playerInventory, this.pos);
     }
 
     @Override
     protected void processMainLogic(World world, BlockPos pos, BlockState state) {
+        // Вся логика уже в базовом классе
+        // Можно добавить дополнительную логику здесь если нужно
+    }
 
+    @Override
+    protected void updateBlockState(World world, BlockPos pos, BlockState state, boolean active) {
+        // Обновляем состояние LIT
+        boolean currentLit = state.get(GeothermalGeneratorBlock.LIT);
+        if (currentLit != active) {
+            world.setBlockState(pos, state.with(GeothermalGeneratorBlock.LIT, active), 3);
+        }
     }
 }
