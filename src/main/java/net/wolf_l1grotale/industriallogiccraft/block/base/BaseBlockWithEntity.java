@@ -36,8 +36,33 @@ public abstract class BaseBlockWithEntity extends BlockWithEntity implements Blo
     public static final BooleanProperty LIT = Properties.LIT;
     public static final BooleanProperty POWERED = Properties.POWERED;
 
+    private final BlockConfiguration config;
+
+    // Старый конструктор (для обратной совместимости)
     protected BaseBlockWithEntity(Settings settings) {
         super(settings);
+        this.config = null;
+
+        // Инициализируем состояние по умолчанию
+        BlockState defaultState = this.getStateManager().getDefaultState();
+
+        if (hasRotation() && defaultState.contains(FACING)) {
+            defaultState = defaultState.with(FACING, Direction.NORTH);
+        }
+        if (hasLitState() && defaultState.contains(LIT)) {
+            defaultState = defaultState.with(LIT, false);
+        }
+        if (hasPoweredState() && defaultState.contains(POWERED)) {
+            defaultState = defaultState.with(POWERED, false);
+        }
+
+        this.setDefaultState(defaultState);
+    }
+
+    // НОВЫЙ конструктор с BlockConfiguration
+    protected BaseBlockWithEntity(Settings settings, BlockConfiguration config) {
+        super(settings);
+        this.config = config;
 
         // Инициализируем состояние по умолчанию
         BlockState defaultState = this.getStateManager().getDefaultState();
@@ -76,51 +101,50 @@ public abstract class BaseBlockWithEntity extends BlockWithEntity implements Blo
      * @return true если блок может вращаться
      */
     protected boolean hasRotation() {
-        return false;
+        return config != null ? config.hasRotation() : false;
     }
 
     /**
      * @return true если блок может вращаться вертикально (вверх/вниз)
      */
     protected boolean allowVerticalRotation() {
-        return false;
+        return config != null ? config.allowVerticalRotation() : false;
     }
 
     /**
      * @return true если блок имеет состояние горения (LIT)
      */
     protected boolean hasLitState() {
-        return false;
+        return config != null ? config.hasLitState() : false;
     }
 
     /**
      * @return true если блок имеет состояние питания (POWERED)
      */
     protected boolean hasPoweredState() {
-        return false;
+        return config != null ? config.hasPoweredState() : false;
     }
 
     /**
      * @return true если блок имеет GUI
      */
     protected boolean hasGui() {
-        return false;
+        return config != null ? config.hasGui() : false;
     }
 
     /**
      * @return true если блок выбрасывает предметы при разрушении
      */
     protected boolean shouldDropItems() {
-        return false;
+        return config != null ? config.hasItemDrops() : false;
     }
 
     /**
      * @return true если блок сохраняет кастомное имя
      */
     protected boolean shouldKeepCustomName() {
-        return false;
+        return config != null ? config.shouldKeepCustomName() : false;
     }
-
     /**
      * Переопределите для добавления кастомных свойств
      */
